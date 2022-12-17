@@ -13,7 +13,7 @@ const paramsFromUrl = new URLSearchParams(window.location.search);
 const paramA = paramsFromUrl
   .get("a")
   ?.split(",")
-  .map((s) => (Object.entries(allergies).find((a) => a[1].shortname === s) ?? ["unknown"])[0])
+  .map((s) => (Object.entries(allergies).find((a) => a[1].shortname === s) ?? [s])[0])
   .join(",");
 const paramL = paramsFromUrl.get("l");
 
@@ -57,7 +57,7 @@ function App() {
 
   useEffect(() => {
     storeAllergies(myAllergies);
-    setMyAllergiesShort(myAllergies.map((a) => allergies[a].shortname));
+    setMyAllergiesShort(myAllergies.map((a) => (a in allergies ? allergies[a].shortname : a)));
   }, [myAllergies]);
 
   const languageInput = (
@@ -130,12 +130,21 @@ type AllergyItemProps = {
 };
 
 function AllergyItem({ id, languages }: AllergyItemProps) {
+  if (id in allergies) {
+    return (
+      <div className="item">
+        <img src={id + ".png"} alt={allergies[id].name.EN} />
+        {(languages.length ? languages : (["EN"] as Languages[])).map((language) => (
+          <span key={language}>{allergies[id].name[language]}</span>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="item">
-      <img src={id + ".png"} alt={allergies[id].name.EN} />
-      {(languages.length ? languages : (["EN"] as Languages[])).map((language) => (
-        <span key={language}>{allergies[id].name[language]}</span>
-      ))}
+      <img src={"unknown.png"} alt={id} />
+      <span>{id}</span>
     </div>
   );
 }
