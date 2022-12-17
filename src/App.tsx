@@ -130,19 +130,16 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Food Allergy Card</h1>
-      <div className="items">
-        {myAllergies
-          .filter((id) => !!id)
-          .map((id) => (
-            <AllergyItem key={id} id={id} languages={languages} />
-          ))}
+      <div className="card">
+        <h1 className="title">Food Allergy Card</h1>
+        <div className="items">
+          {myAllergies
+            .filter((id) => !!id)
+            .map((id) => (
+              <AllergyItem key={id} id={id} languages={languages} />
+            ))}
+        </div>
       </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
       <h2>Share with the chef</h2>
       <div className="qr-code">
         <QRCode
