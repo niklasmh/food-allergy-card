@@ -156,6 +156,11 @@ function App() {
       <h2>Allergies</h2>
       <p className="dimmed-text">(The order you select matters here as well)</p>
       {allergyInput}
+      <h4>(All changes made are stored in this browser until next time you visit this site.)</h4>
+      <p>
+        DISCLAIMER: I do not take any responsibility for the use of this site. Also, I discourage using this site if you
+        have specific request to your meal that this site cannot provide.
+      </p>
     </div>
   );
 }
