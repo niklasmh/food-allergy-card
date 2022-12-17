@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
 import "./App.css";
 import { Allergies, allergies, allLanguages, Languages } from "./allergies";
@@ -26,6 +26,7 @@ function App() {
   const [myAllergies, setMyAllergies] = useState<Allergies[]>(initialAllergies);
   const [myAllergiesShort, setMyAllergiesShort] = useState<string[]>([]);
   const [languages, setLanguages] = useState<Languages[]>(initialLanguages);
+  const lastAllergyInputRef = useRef<any>();
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.target.checked;
@@ -88,6 +89,42 @@ function App() {
             </label>
           </div>
         ))}
+      {myAllergies
+        .map((id) => (id in allergies ? null : id))
+        .map((id, i) =>
+          id === null ? null : (
+            <div key={"custom-" + i} className="allergy-choice">
+              <input
+                value={id}
+                ref={lastAllergyInputRef}
+                onChange={(event) => {
+                  const prevValue = id;
+                  const value = event.target.value;
+                  setMyAllergies((allergies) => allergies.map((a) => (a === prevValue ? value : a)) as Allergies[]);
+                }}
+              />{" "}
+              <button
+                onClick={() => {
+                  setMyAllergies((allergies) => [...allergies.slice(0, i), ...allergies.slice(i + 1)]);
+                }}
+              >
+                Remove
+              </button>
+            </div>
+          )
+        )}
+      {
+        <div className="allergy-choice">
+          <input
+            key={"custom-" + myAllergies.filter((id) => !(id in allergies)).length}
+            placeholder="+ Add more ..."
+            onFocus={() => {
+              setMyAllergies((allergies) => [...allergies, "" as any]);
+              setTimeout(() => lastAllergyInputRef.current?.focus(), 100);
+            }}
+          />{" "}
+        </div>
+      }
     </div>
   );
 
@@ -95,9 +132,11 @@ function App() {
     <div className="App">
       <h1>Food Allergy Card</h1>
       <div className="items">
-        {myAllergies.map((id) => (
-          <AllergyItem key={id} id={id} languages={languages} />
-        ))}
+        {myAllergies
+          .filter((id) => !!id)
+          .map((id) => (
+            <AllergyItem key={id} id={id} languages={languages} />
+          ))}
       </div>
       <br />
       <br />
