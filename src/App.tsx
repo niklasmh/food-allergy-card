@@ -128,6 +128,8 @@ function App() {
     </div>
   );
 
+  const url = location.origin + "?a=" + myAllergiesShort.join(",") + "&l=" + languages.join(",").toLowerCase();
+
   return (
     <div className="App">
       <div className="card">
@@ -142,10 +144,8 @@ function App() {
       </div>
       <h2>Share with the chef</h2>
       <div className="qr-code">
-        <QRCode
-          value={location.origin + "?a=" + myAllergiesShort.join(",") + "&l=" + languages.join(",").toLowerCase()}
-          style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-        />
+        <QRCode value={url} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
+        <button onClick={() => navigator.clipboard.writeText(url)}>Copy link from QR code</button>
       </div>
       <br />
       <br />
