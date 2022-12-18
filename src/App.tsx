@@ -161,6 +161,13 @@ function App() {
         DISCLAIMER: I do not take any responsibility for the use of this site. Also, I discourage using this site if you
         have specific request to your meal that this site cannot provide.
       </p>
+      <p>
+        You can find the project on{" "}
+        <a href="https://github.com/niklasmh/food-allergy-card" target="_blank">
+          GitHub
+        </a>
+        .
+      </p>
     </div>
   );
 }
