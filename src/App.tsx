@@ -74,21 +74,19 @@ function App() {
 
   const allergyInput = (
     <div>
-      {Object.entries(allergies)
-        .filter((a) => a[0] !== "unknown")
-        .map(([id, { name }]) => (
-          <div key={id} className="allergy-choice">
-            <input
-              type="checkbox"
-              id={id}
-              defaultChecked={myAllergies.includes(id as Allergies)}
-              onChange={handleAllergyChange}
-            />
-            <label htmlFor={id}>
-              {name[languages.length ? languages[0] : "EN"]} <img src={id + ".png"} alt={name.EN} />
-            </label>
-          </div>
-        ))}
+      {Object.entries(allergies).map(([id, { name }]) => (
+        <div key={id} className="allergy-choice">
+          <input
+            type="checkbox"
+            id={id}
+            defaultChecked={myAllergies.includes(id as Allergies)}
+            onChange={handleAllergyChange}
+          />
+          <label htmlFor={id}>
+            {name[languages.length ? languages[0] : "EN"]} <img src={id + ".png"} alt={name.EN} />
+          </label>
+        </div>
+      ))}
       {myAllergies
         .map((id) => (id in allergies ? null : id))
         .map((id, i) =>

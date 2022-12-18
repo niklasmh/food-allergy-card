@@ -36,8 +36,7 @@ export type Allergies =
   | "soy"
   | "sulfites"
   | "treeNut"
-  | "wheat"
-  | "unknown";
+  | "wheat";
 
 export const allergies: { [id in Allergies]: Allergy } = {
   almond: {
@@ -227,15 +226,6 @@ export const allergies: { [id in Allergies]: Allergy } = {
       EN: "wheat",
       ES: "trigo",
       NO: "hvete",
-    },
-  },
-  unknown: {
-    shortname: "u",
-    name: {
-      DE: "unbekannt",
-      EN: "unknown",
-      ES: "desconocido",
-      NO: "ukjent",
     },
   },
 };
