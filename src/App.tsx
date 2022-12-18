@@ -145,8 +145,9 @@ function App() {
       <h2>Share with the chef</h2>
       <div className="qr-code">
         <QRCode value={url} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
-        <button onClick={() => navigator.clipboard.writeText(url)}>Copy link from QR code</button>
       </div>
+      <br />
+      <button onClick={() => navigator.clipboard.writeText(url)}>Copy link from QR code</button>
       <br />
       <br />
       <h2>Languages (shown on the card)</h2>
