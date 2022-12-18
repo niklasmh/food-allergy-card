@@ -9,6 +9,6 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
-    base: `/${ASSET_URL}/`,
+    base: `/${ASSET_URL}`,
   };
 });
