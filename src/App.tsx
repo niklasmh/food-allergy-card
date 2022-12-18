@@ -8,6 +8,7 @@ import { Allergies, allergies, allLanguages, Languages } from "./allergies";
 // TODO: Test it IRL
 // TODO: Make a printable version
 // TODO: Add information about how severe the allergy is
+// TODO: Add SEO tags
 
 const paramsFromUrl = new URLSearchParams(window.location.search);
 const paramA = paramsFromUrl
