@@ -12,8 +12,6 @@ jobs:
   build-and-deploy:
     concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
-    env:
-      ASSET_URL: food-allergy-card
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
