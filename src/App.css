@@ -24,11 +24,17 @@
   display: flex;
   flex-flow: column nowrap;
   text-transform: uppercase;
+  align-items: center;
 }
 
 .item span:not(:first-of-type) {
   color: #666;
 }
+
+.item > span {
+  padding: 0 10px;
+}
+
 
 .language-choice {
   text-transform: capitalize;
@@ -44,7 +50,6 @@
   object-fit: contain;
   mix-blend-mode: difference;
 }
-
 .allergy-choice img {
   height: 20px;
   width: 20px;
