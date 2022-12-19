@@ -23,6 +23,8 @@ const initialLanguages = (paramL ?? localStorage.getItem("languages") ?? "EN").t
 const storeAllergies = (allergies: Allergies[]) => localStorage.setItem("allergies", allergies.join(","));
 const storeLanguages = (languages: Languages[]) => localStorage.setItem("languages", languages.join(","));
 
+let prevUrlData = "";
+
 function App() {
   const [myAllergies, setMyAllergies] = useState<Allergies[]>(initialAllergies);
   const [myAllergiesShort, setMyAllergiesShort] = useState<string[]>([]);
@@ -127,7 +129,14 @@ function App() {
     </div>
   );
 
-  const url = location.origin + "?a=" + myAllergiesShort.join(",") + "&l=" + languages.join(",").toLowerCase();
+  const allergiesParam = myAllergiesShort.join(",");
+  const languagesParam = languages.join(",").toLowerCase();
+  const urlData = "?a=" + allergiesParam + "&l=" + languagesParam;
+  const url = location.origin + urlData;
+  if (url !== prevUrlData) {
+    prevUrlData = url;
+    history.replaceState({ a: allergiesParam, l: languagesParam }, "Food Allergy Card | " + allergiesParam, urlData);
+  }
 
   return (
     <div className="App">
