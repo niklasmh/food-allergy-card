@@ -47,15 +47,23 @@
 .item > img {
   height: 100px;
   width: 100px;
-  object-fit: contain;
-  mix-blend-mode: difference;
 }
+
 .allergy-choice img {
   height: 20px;
   width: 20px;
   vertical-align: middle;
+}
+
+:is(.item, .allergy-choice) img {
   object-fit: contain;
-  mix-blend-mode: difference;
+  mix-blend-mode: lighten;
+}
+
+@media (prefers-color-scheme: light) {
+  :is(.item, .allergy-choice) img {
+    mix-blend-mode: darken;
+  }
 }
 
 .qr-code {
