@@ -13,7 +13,7 @@ export function Card() {
         <h1 className="title capitalize mb-8">
           {card.name || allLanguages.find((l) => l.id === card.languages[0])?.translations["allergies"]}
         </h1>
-        <div className="items gap-3 w-full">
+        <div className="items gap-3 w-full grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5">
           {card.allergies
             .filter((id) => !!id)
             .map((id) => (
