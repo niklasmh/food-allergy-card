@@ -63,9 +63,14 @@ function Card({ card, newCard = false, selected = false }: CardProps) {
       }}
     >
       {newCard ? (
-        <div style={{ fontSize: "3em" }} className="h-full flex items-center justify-center">
-          +
-        </div>
+        <>
+          <div style={{ fontSize: "2.5em" }} className="flex items-center justify-center">
+            +
+          </div>
+          <div style={{ fontSize: "1em" }} className="flex items-center justify-center">
+            New card
+          </div>
+        </>
       ) : (
         <>
           <div
