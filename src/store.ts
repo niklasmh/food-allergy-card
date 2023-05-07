@@ -13,9 +13,23 @@ export type Card = {
 };
 
 function createCard(allergies: Allergies[], languages: Languages[], fromLink: boolean, saved: boolean): Card {
+  if (!fromLink && !saved) {
+    const card = {
+      name: "",
+      id: Math.random().toString(16).slice(2),
+      isFromLink: fromLink,
+      saved: true,
+      languages,
+      allergies,
+    };
+    storeToPersistentStorage<Card>("currentCard", card);
+    const cards = getFromPersistentStorage<Card[]>("cards", []);
+    storeToPersistentStorage<Card[]>("cards", [card, ...cards]);
+    return card;
+  }
   return {
     name: "",
-    id: "",
+    id: saved ? Math.random().toString(16).slice(2) : "",
     isFromLink: fromLink,
     saved,
     languages,
@@ -27,7 +41,7 @@ const { allergies, languages, hasParams } = parseURLParams();
 
 let card: Card = hasParams
   ? createCard(allergies, languages, true, false)
-  : getFromPersistentStorage<Card>("currentCard", createCard([], [], false, true));
+  : getFromPersistentStorage<Card>("currentCard", () => createCard([], [], false, false));
 
 export const currentCardState = atom<Card>({
   key: "currentCard",

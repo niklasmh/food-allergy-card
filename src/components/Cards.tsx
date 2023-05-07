@@ -7,10 +7,6 @@ export function Cards() {
   const cardId = card?.id;
   const [cards] = useRecoilState(cardsState);
 
-  if (cards.length === 0) {
-    return null;
-  }
-
   return (
     <div className="flex flex-col gap-4 w-full">
       Your cards:
