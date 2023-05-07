@@ -11,9 +11,18 @@ export function Card() {
     <div className="flex flex-col justify-center items-center mb-8 gap-16 min-h-screen">
       <div className="card">
         <h1 className="title capitalize mb-8">
-          {card.name || allLanguages.find((l) => l.id === card.languages[0])?.translations["allergies"]}
+          {(card.name || allLanguages.find((l) => l.id === card.languages[0])?.translations["allergies"]) ??
+            "Allergies"}
         </h1>
-        <div className="items gap-3 w-full grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5">
+        <div
+          className={
+            "items gap-3 w-full grid" +
+            (card.allergies.length >= 2 ? " grid-cols-2" : " grid-cols-1") +
+            (card.allergies.length >= 3 ? " xs:grid-cols-3" : "") +
+            (card.allergies.length >= 4 ? " sm:grid-cols-4" : "") +
+            (card.allergies.length >= 5 ? " md:grid-cols-5" : "")
+          }
+        >
           {card.allergies
             .filter((id) => !!id)
             .map((id) => (

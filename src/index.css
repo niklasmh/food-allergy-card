@@ -83,7 +83,15 @@ button {
   box-shadow: 0 0 32px -16px #000;
   border-radius: 32px;
   margin: 16px;
+  transform-origin: 50% 0;
 }
+
+@media (max-height: 530px) { .card { transform: scale(0.95); } }
+@media (max-height: 510px) { .card { transform: scale(0.90); } }
+@media (max-height: 480px) { .card { transform: scale(0.85); } }
+@media (max-height: 450px) { .card { transform: scale(0.80); } }
+@media (max-height: 420px) { .card { transform: scale(0.75); } }
+@media (max-height: 390px) { .card { transform: scale(0.70); } }
 
 .small-card {
   background-image: linear-gradient(120deg, #8E2DE288, #4A00E088);
