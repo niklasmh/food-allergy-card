@@ -4,14 +4,50 @@ type Language = {
   id: Languages;
   longName: string;
   icon: string;
+  translations: { [key: string]: string };
 };
 
 export const allLanguages: Language[] = [
-  { id: "DE", longName: "deutsch", icon: "🇩🇪" },
-  { id: "EN", longName: "english", icon: "🇬🇧" },
-  { id: "ES", longName: "español", icon: "🇪🇸" },
-  { id: "NO", longName: "norsk", icon: "🇳🇴" },
-  { id: "NL", longName: "dutch", icon: "🇳🇱" },
+  {
+    id: "DE",
+    longName: "deutsch",
+    icon: "🇩🇪",
+    translations: {
+      allergies: "allergien",
+    },
+  },
+  {
+    id: "EN",
+    longName: "english",
+    icon: "🇬🇧",
+    translations: {
+      allergies: "allergies",
+    },
+  },
+  {
+    id: "ES",
+    longName: "español",
+    icon: "🇪🇸",
+    translations: {
+      allergies: "alergias",
+    },
+  },
+  {
+    id: "NO",
+    longName: "norsk",
+    icon: "🇳🇴",
+    translations: {
+      allergies: "allergier",
+    },
+  },
+  {
+    id: "NL",
+    longName: "dutch",
+    icon: "🇳🇱",
+    translations: {
+      allergies: "allergieën",
+    },
+  },
 ];
 
 export type Allergy = {

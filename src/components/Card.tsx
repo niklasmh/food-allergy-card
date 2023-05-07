@@ -1,17 +1,19 @@
 import { useRecoilState } from "recoil";
-import { Allergies, Languages, allAllergies } from "../allergies";
+import { Allergies, Languages, allAllergies, allLanguages } from "../allergies";
 import { cardsState, currentCardState } from "../store";
 import { Cards } from "./Cards";
 
 export function Card() {
   const [card, setCard] = useRecoilState(currentCardState);
-  const [cards, setCards] = useRecoilState(cardsState);
+  const [, setCards] = useRecoilState(cardsState);
 
   return (
     <div className="flex flex-col justify-center items-center mb-8 gap-16 min-h-screen">
       <div className="card">
-        <h1 className="title mb-8">{card.name || "Allergies"}</h1>
-        <div className="items gap-3">
+        <h1 className="title capitalize mb-8">
+          {card.name || allLanguages.find((l) => l.id === card.languages[0])?.translations["allergies"]}
+        </h1>
+        <div className="items gap-3 w-full">
           {card.allergies
             .filter((id) => !!id)
             .map((id) => (
