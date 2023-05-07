@@ -13,6 +13,10 @@ import { Share } from "./components/Share";
 // TODO: Add SEO tags
 // TODO: Add more languages
 // TODO: Add more allergies, maybe group them as well
+// TODO: Dnd to rearrange the list
+// TODO: Translate all texts
+// TODO: Add more allergies and make it possible to get them from a more hidden menu, keeping the important one in sight
+// TODO: Rearrange cards? We can use the same library here
 
 function App() {
   return (
