@@ -37,7 +37,7 @@ function Card({ card, newCard = false, selected = false }: CardProps) {
   return (
     <div
       className={
-        "small-card flex flex-col justify-between rounded-md bg-black p-3 gap-1 cursor-pointer hover:scale-105 transition-all" +
+        "small-card flex flex-col justify-between bg-black p-3 gap-1 cursor-pointer hover:scale-105 transition-all" +
         (selected ? " selected" : "")
       }
       style={{ minWidth: 120, maxWidth: 120, aspectRatio: 1.59 }}

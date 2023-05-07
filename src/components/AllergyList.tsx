@@ -24,7 +24,7 @@ export function AllergyList() {
     setCards((cards) => cards.map((c) => (c.id === card.id ? updatedCard : c)));
   };
 
-  const labelStyle = "flex flex-row items-center px-3 py-1 gap-2 cursor-pointer";
+  const labelStyle = "allergy-item flex flex-row items-center px-3 py-1 gap-2 cursor-pointer";
   const selectedStyle = " rounded-md green-btn";
 
   return (
