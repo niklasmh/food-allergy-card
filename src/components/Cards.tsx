@@ -12,9 +12,12 @@ export function Cards() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-full">
       Your cards:
-      <div className="flex flex-row items-start flex-wrap gap-4">
+      <div
+        className="grid gap-4 justify-items-center"
+        style={{ gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))" }}
+      >
         <Card card={card} newCard={true} />
         {cards.map((card, i) => (
           <Card key={i} card={card} selected={cardId === card.id} />
