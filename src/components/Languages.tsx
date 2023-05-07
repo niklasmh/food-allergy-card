@@ -36,7 +36,7 @@ export function Languages() {
           const checked = card.languages.includes(id);
           return (
             <label key={id} className={labelStyle + (checked ? selectedStyle : "")}>
-              <input type="checkbox" id={id} defaultChecked={checked} onChange={handleLanguageChange} />
+              <input type="checkbox" id={id} checked={checked} onChange={handleLanguageChange} />
               {icon}
               <span className="overflow-x-hidden text-ellipsis capitalize">{longName}</span>
               {checked ? <span className="ml-auto">{card.languages.indexOf(id) + 1}.</span> : null}
