@@ -1,20 +1,27 @@
 import { useRecoilState } from "recoil";
 import { allLanguages, type Languages as LanguagesType } from "../allergies";
-import { currentCardStore } from "../store";
+import { cardsState, currentCardState } from "../store";
 
 export function Languages() {
-  const [card, setCard] = useRecoilState(currentCardStore);
+  const [card, setCard] = useRecoilState(currentCardState);
+  const [cards, setCards] = useRecoilState(cardsState);
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.target.checked;
     const languageCode = event.target.id as LanguagesType;
+    const languages = card.languages.slice(0);
     if (isChecked) {
       if (!card.languages.includes(languageCode)) {
-        setCard((c) => ({ ...c, languages: [...c.languages, languageCode] }));
+        languages.push(languageCode);
       }
     } else {
-      setCard((c) => ({ ...c, languages: c.languages.filter((e) => e !== languageCode) }));
+      if (languages.indexOf(languageCode) !== -1) {
+        languages.splice(languages.indexOf(languageCode), 1);
+      }
     }
+    const updatedCard = { ...card, languages };
+    setCard(updatedCard);
+    setCards((cards) => cards.map((c) => (c.id === card.id ? updatedCard : c)));
   };
 
   const labelStyle = "language-choice flex flex-row w-40 px-3 py-1 gap-2 cursor-pointer";

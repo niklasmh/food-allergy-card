@@ -29,15 +29,16 @@ let card: Card = hasParams
   ? createCard(allergies, languages, true, false)
   : getFromPersistentStorage<Card>("currentCard", createCard([], [], false, true));
 
-export const currentCardStore = atom<Card>({
+export const currentCardState = atom<Card>({
   key: "currentCard",
   default: card,
   effects: [
     ({ onSet, setSelf }) => {
       onSet((card) => {
         if (!card.isFromLink) {
-          storeToPersistentStorage<Card>("currentCard", card);
-          setSelf({ ...card, saved: true });
+          const savedCard = { ...card, saved: true };
+          storeToPersistentStorage<Card>("currentCard", savedCard);
+          setSelf(savedCard);
         }
       });
     },
@@ -46,11 +47,13 @@ export const currentCardStore = atom<Card>({
 
 export const cardsState = atom<Card[]>({
   key: "cards",
-  default: JSON.parse(localStorage.getItem("cards") || "{}"),
+  default: getFromPersistentStorage<Card[]>("cards", []),
   effects: [
-    ({ onSet }) => {
+    ({ onSet, setSelf }) => {
       onSet((cards) => {
-        storeToPersistentStorage<Card[]>("cards", cards);
+        const savedCards = cards.map((c) => ({ ...c, saved: true, isFromLink: false }));
+        storeToPersistentStorage<Card[]>("cards", savedCards);
+        setSelf(savedCards);
       });
     },
   ],
@@ -59,8 +62,7 @@ export const cardsState = atom<Card[]>({
 export const allergiesShortNamesState = selector({
   key: "allergiesShortNames",
   get: ({ get }) => {
-    const card = get(currentCardStore);
-
+    const card = get(currentCardState);
     return card.allergies.map((a: Allergies) => (a in allAllergies ? allAllergies[a].shortname : a));
   },
 });

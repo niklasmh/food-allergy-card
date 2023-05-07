@@ -1,11 +1,11 @@
 import QRCode from "react-qr-code";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { allergiesShortNamesState, currentCardStore } from "../store";
+import { allergiesShortNamesState, currentCardState } from "../store";
 
 let prevUrlData = "";
 
 export function Share() {
-  const [card] = useRecoilState(currentCardStore);
+  const [card] = useRecoilState(currentCardState);
   const allergiesShortNames = useRecoilValue(allergiesShortNamesState);
 
   const allergiesParam = allergiesShortNames.join(",");
@@ -13,7 +13,7 @@ export function Share() {
   const urlData = "?a=" + allergiesParam + "&l=" + languagesParam;
   const url = location.origin + urlData;
 
-  if (!card.saved && url !== prevUrlData) {
+  if (!card.saved && !card.isFromLink && url !== prevUrlData) {
     prevUrlData = url;
     history.replaceState({ a: allergiesParam, l: languagesParam }, "Food Allergy Card | " + allergiesParam, urlData);
   }

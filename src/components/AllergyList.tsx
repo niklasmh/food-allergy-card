@@ -1,20 +1,27 @@
 import { useRecoilState } from "recoil";
-import { allAllergies, Allergies, Allergy } from "../allergies";
-import { currentCardStore } from "../store";
+import { allAllergies, Allergies } from "../allergies";
+import { cardsState, currentCardState } from "../store";
 
 export function AllergyList() {
-  const [card, setCard] = useRecoilState(currentCardStore);
+  const [card, setCard] = useRecoilState(currentCardState);
+  const [, setCards] = useRecoilState(cardsState);
 
   const handleAllergyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.target.checked;
     const id = event.target.id as Allergies;
+    const allergies = card.allergies.slice(0);
     if (isChecked) {
       if (!card.allergies.includes(id)) {
-        setCard((c) => ({ ...c, allergies: [...c.allergies, id] }));
+        allergies.push(id);
       }
     } else {
-      setCard((c) => ({ ...c, allergies: c.allergies.filter((e) => e !== id) }));
+      if (allergies.indexOf(id) !== -1) {
+        allergies.splice(allergies.indexOf(id), 1);
+      }
     }
+    const updatedCard = { ...card, allergies };
+    setCard(updatedCard);
+    setCards((cards) => cards.map((c) => (c.id === card.id ? updatedCard : c)));
   };
 
   const labelStyle = "flex flex-row items-center px-3 py-1 gap-2 cursor-pointer";
@@ -29,11 +36,9 @@ export function AllergyList() {
           const checked = card.allergies.includes(allergy);
           return (
             <label key={id} className={labelStyle + (checked ? selectedStyle : "")}>
-              <input type="checkbox" id={id} defaultChecked={checked} onChange={handleAllergyChange} />
+              <input type="checkbox" id={id} checked={checked} onChange={handleAllergyChange} />
               <img src={id + ".png"} alt={name.EN} className="w-5 h-5 blend-img" />{" "}
-              <span className="overflow-x-hidden text-ellipsis capitalize">
-                {name[card.languages.length ? card.languages[0] : "EN"]}
-              </span>
+              <span className="overflow-x-hidden text-ellipsis capitalize">{name["EN"]}</span>
               {checked ? <span className="ml-auto">{card.allergies.indexOf(allergy) + 1}.</span> : null}
             </label>
           );
