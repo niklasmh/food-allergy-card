@@ -7,6 +7,14 @@ export function Card() {
   const [card, setCard] = useRecoilState(currentCardState);
   const [, setCards] = useRecoilState(cardsState);
 
+  const beautifyGrid = (elementCount: number): string => {
+    const gridCols = [[1], [1], [2], [2, 3], [2, 4], [2, 3, 5], [2, 3], [2, 3, 4], [2, 3, 4], [2, 3, 5]];
+    gridCols.push([2, 3, 4, 5]);
+    const l = gridCols.length;
+    const gridStyles = ["", "grid-cols-1", "grid-cols-2", "xs:grid-cols-3", "sm:grid-cols-4", "md:grid-cols-5"];
+    return " " + gridCols[Math.min(elementCount, l - 1)].map((c) => gridStyles[c]).join(" ");
+  };
+
   return (
     <div className="flex flex-col justify-center items-center mb-8 gap-16 min-h-screen">
       <div className="card">
@@ -14,20 +22,13 @@ export function Card() {
           {(card.name || allLanguages.find((l) => l.id === card.languages[0])?.translations["allergies"]) ??
             "Allergies"}
         </h1>
-        <div
-          className={
-            "items gap-3 w-full grid" +
-            (card.allergies.length >= 2 ? " grid-cols-2" : " grid-cols-1") +
-            (card.allergies.length >= 3 ? " xs:grid-cols-3" : "") +
-            (card.allergies.length >= 4 ? " sm:grid-cols-4" : "") +
-            (card.allergies.length >= 5 ? " md:grid-cols-5" : "")
-          }
-        >
+        <div className={"items gap-3 w-full grid" + beautifyGrid(card.allergies.length)}>
           {card.allergies
             .filter((id) => !!id)
             .map((id) => (
               <AllergyItem key={id} id={id} languages={card.languages} />
             ))}
+          {card.allergies.length === 0 && "(Add allergies on the bottom of the site)"}
         </div>
       </div>
       {card.isFromLink && (
