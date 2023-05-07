@@ -1,11 +1,17 @@
 export type Languages = "DE" | "EN" | "ES" | "NL" | "NO";
 
-export const allLanguages: { id: Languages; longName: string }[] = [
-  { id: "DE", longName: "deutsch" },
-  { id: "EN", longName: "english" },
-  { id: "ES", longName: "español" },
-  { id: "NO", longName: "norsk" },
-  { id: "NL", longName: "dutch" },
+type Language = {
+  id: Languages;
+  longName: string;
+  icon: string;
+};
+
+export const allLanguages: Language[] = [
+  { id: "DE", longName: "deutsch", icon: "🇩🇪" },
+  { id: "EN", longName: "english", icon: "🇬🇧" },
+  { id: "ES", longName: "español", icon: "🇪🇸" },
+  { id: "NO", longName: "norsk", icon: "🇳🇴" },
+  { id: "NL", longName: "dutch", icon: "🇳🇱" },
 ];
 
 export type Allergy = {
@@ -39,7 +45,7 @@ export type Allergies =
   | "treeNut"
   | "wheat";
 
-export const allergies: { [id in Allergies]: Allergy } = {
+export const allAllergies: { [id in Allergies]: Allergy } = {
   almond: {
     shortname: "a",
     name: {

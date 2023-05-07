@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --font-family: 'Poppins', sans-serif;
   --font-family-special: 'Indie Flower', cursive;
@@ -42,10 +46,16 @@ h1 {
 }
 
 button {
-  border: 2px solid #555;
-  background: #444;
-  border-radius: 8px;
+  box-shadow: inset 0 0 0 2px #9a82ff;
+  background: linear-gradient(120deg, #8E2DE2, #4A00E0);
+  border-radius: 6px;
   padding: 8px 12px;
+}
+
+.green-btn {
+  box-shadow: inset 0 0 0 2px #82b763;
+  background: linear-gradient(120deg, #5a7849, #51733e);
+  border-radius: 6px;
 }
 
 @media (prefers-color-scheme: light) {
@@ -60,4 +70,77 @@ button {
     border: 2px solid #ccc;
     background: #eee;
   }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - 100px);
+}
+
+.items {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.item {
+  display: flex;
+  flex-flow: column nowrap;
+  text-transform: uppercase;
+  align-items: center;
+}
+
+.item span:not(:first-of-type) {
+  color: #666;
+}
+
+.item > span {
+  padding: 0 10px;
+}
+
+.language-choice {
+  text-transform: capitalize;
+}
+
+.allergy-choice {
+  text-transform: capitalize;
+}
+
+.item > img {
+  height: 100px;
+  width: 100px;
+}
+
+.allergy-choice img {
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+}
+
+.blend-img {
+  object-fit: contain;
+  mix-blend-mode: lighten;
+}
+
+@media (prefers-color-scheme: light) {
+  .blend-img {
+    mix-blend-mode: darken;
+  }
+}
+
+.qr-code {
+  display: inline-block;
+  background-color: #fff;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 16px;
+  max-width: 100%;
+}
+
+.dimmed-text {
+  color: #666;
 }
