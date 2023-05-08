@@ -1,11 +1,13 @@
 import { useRecoilState } from "recoil";
 import { Allergies, Languages, allAllergies, allLanguages } from "../allergies";
-import { cardsState, currentCardState } from "../store";
+import { allColors, cardsState, colorMap, currentCardState } from "../store";
 import { Cards } from "./Cards";
+import { useState } from "react";
 
 export function Card() {
   const [card, setCard] = useRecoilState(currentCardState);
-  const [, setCards] = useRecoilState(cardsState);
+  const [cards, setCards] = useRecoilState(cardsState);
+  const [editMode, setEditMode] = useState<boolean>(false);
 
   const beautifyGrid = (elementCount: number): string => {
     const gridCols = [[1], [1], [2], [2, 3], [2, 4], [2, 3, 5], [2, 3], [2, 3, 4], [2, 3, 4], [2, 3, 5]];
@@ -16,8 +18,11 @@ export function Card() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mb-8 gap-16 min-h-screen">
-      <div className="card">
+    <div className={"flex flex-col justify-center items-center mb-8 gap-16 min-h-screen" + (editMode ? " edit" : "")}>
+      <div
+        className="card relative"
+        style={{ backgroundImage: `linear-gradient(120deg, ${(colorMap[card.color || "purple"] || []).join(",")})` }}
+      >
         <h1 className="title capitalize mb-8">
           {(card.name || allLanguages.find((l) => l.id === card.languages[0])?.translations["allergies"]) ??
             "Allergies"}
@@ -30,6 +35,60 @@ export function Card() {
             ))}
           {card.allergies.length === 0 && "(Add allergies on the bottom of the site)"}
         </div>
+        {editMode && (
+          <div className="w-full flex flex-row justify-center gap-2 absolute left-0" style={{ bottom: -32 }}>
+            <div className="flex flex-row gap-2">
+              {allColors.map(({ id, colors }) => (
+                <div
+                  key={id}
+                  className={
+                    "color w-8 h-6 rounded-md cursor-pointer hover:scale-105 transition-all" +
+                    (card?.color === id ? " selected" : "")
+                  }
+                  style={{ backgroundImage: `linear-gradient(120deg, ${colors.join(",")})` }}
+                  onClick={() => {
+                    const modifiedCard = { ...card, color: id };
+                    setCard(modifiedCard);
+                    setCards((cards) => cards.map((c) => (c.id === card.id ? modifiedCard : c)));
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-row w-full items-start gap-4">
+        {editMode ? (
+          <button className="success-btn" onClick={() => setEditMode(false)}>
+            💾 Save card
+          </button>
+        ) : (
+          <button onClick={() => setEditMode(true)}>🖊️ Edit card</button>
+        )}
+        <div className="flex-1" />
+        <button
+          className="danger-btn"
+          onClick={() => {
+            const updatedCards = cards.filter((c) => c.id !== card.id);
+            setCards(updatedCards);
+            if (updatedCards.length > 0) {
+              setCard(updatedCards[0]);
+            } else {
+              setCard({
+                allergies: [],
+                languages: [],
+                color: "purple",
+                id: Math.random().toString(16).slice(2),
+                name: "",
+                saved: false,
+                isFromLink: false,
+              });
+            }
+          }}
+        >
+          🗑️ Remove card
+        </button>
       </div>
       {card.isFromLink && (
         <div className="flex flex-col gap-4">

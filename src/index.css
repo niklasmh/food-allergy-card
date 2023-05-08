@@ -46,7 +46,6 @@ h1 {
 }
 
 button {
-  box-shadow: inset 0 0 0 2px #9a82ff;
   background: linear-gradient(120deg, #8E2DE2, #4A00E0);
   border-radius: 6px;
   padding: 8px 12px;
@@ -55,6 +54,16 @@ button {
 .green-btn {
   box-shadow: inset 0 0 0 2px #82b763;
   background: linear-gradient(120deg, #5a7849, #51733e);
+  border-radius: 6px;
+}
+
+.success-btn {
+  background: linear-gradient(120deg, #88c063,#46ab2f);
+  border-radius: 6px;
+}
+
+.danger-btn {
+  background: linear-gradient(120deg, #ED213A, #93291E);
   border-radius: 6px;
 }
 
@@ -115,7 +124,7 @@ button {
 
 .small-card.selected {
   background-image: linear-gradient(120deg, #8E2DE2, #4A00E0);
-  box-shadow: 0 0 32px -16px #000, inset 0 0 0 2px #9a82ff;
+  box-shadow: 0 0 32px -16px #000, inset 0 0 0 2px #fff8;
 }
 
 @media (prefers-color-scheme: light) {
@@ -126,12 +135,22 @@ button {
   
   .small-card.selected {
     background-image: linear-gradient(120deg, #b68add, #9d82d3);
-    box-shadow: 0 0 32px -16px #000, inset 0 0 0 2px #5e4aae;
+    box-shadow: 0 0 32px -16px #000, inset 0 0 0 2px #0008;
+  }
+}
+
+@keyframes wiggle {
+  from {
+    transform: rotate(3deg);
+  }
+  to {
+    transform: rotate(-3deg);
   }
 }
 
 .items {
   margin: auto;
+  mix-blend-mode: lighten;
 }
 
 .item {
@@ -140,6 +159,13 @@ button {
   text-transform: uppercase;
   align-items: center;
 }
+
+.edit .item {
+  /*animation: wiggle 0.5s infinite alternate ease-in-out;*/
+}
+.edit .item:nth-child(2n) { animation-delay: 0.25s; }
+.edit .item:nth-child(3n) { animation-delay: 0.5s; }
+.edit .item:nth-child(5n) { animation-delay: 0.75s; }
 
 .language-choice {
   text-transform: capitalize;
@@ -204,4 +230,12 @@ button {
   .card .dimmed-text {
     color: #fff8;
   }
+}
+
+.color {
+    box-shadow: 0 0 32px -16px #000;
+}
+
+.color.selected {
+    box-shadow: 0 0 32px -16px #000, inset 0 0 0 2px #fff8;
 }

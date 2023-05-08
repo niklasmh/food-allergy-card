@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { allAllergies, allLanguages } from "../allergies";
-import { type Card as CardType, cardsState, currentCardState } from "../store";
+import { type Card as CardType, cardsState, currentCardState, colorMap } from "../store";
 
 export function Cards() {
   const [card] = useRecoilState(currentCardState);
@@ -39,12 +39,18 @@ function Card({ card, newCard = false, selected = false }: CardProps) {
         "small-card flex flex-col justify-between bg-black p-3 gap-1 cursor-pointer hover:scale-105 transition-all" +
         (selected ? " selected" : "")
       }
-      style={{ minWidth: 120, maxWidth: 120, aspectRatio: 1.59 }}
+      style={{
+        minWidth: 120,
+        maxWidth: 120,
+        aspectRatio: 1.59,
+        backgroundImage: `linear-gradient(120deg, ${colorMap[card.color || "purple"].join(",")})`,
+      }}
       onClick={() => {
         if (newCard) {
           const modifiedCard: CardType = {
             allergies: [],
             languages: [],
+            color: card.color,
             isFromLink: false,
             saved: true,
             id: Math.random().toString(16).slice(2),
