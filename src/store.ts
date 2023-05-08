@@ -106,3 +106,8 @@ export const allergiesShortNamesState = selector({
     return card.allergies.map((a: Allergies) => (a in allAllergies ? allAllergies[a].shortname : a));
   },
 });
+
+export const editState = atom<boolean>({
+  key: "edit",
+  default: false,
+});

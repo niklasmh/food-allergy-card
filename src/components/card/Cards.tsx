@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
-import { allAllergies, allLanguages } from "../allergies";
-import { type Card as CardType, cardsState, currentCardState, colorMap } from "../store";
+import { allAllergies, allLanguages } from "../../allergies";
+import { type Card as CardType, cardsState, currentCardState, colorMap } from "../../store";
 
 export function Cards() {
   const [card] = useRecoilState(currentCardState);
