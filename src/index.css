@@ -158,14 +158,19 @@ button {
   flex-flow: column nowrap;
   text-transform: uppercase;
   align-items: center;
+  user-select: none;
 }
 
 .edit .item {
-  /*animation: wiggle 0.5s infinite alternate ease-in-out;*/
+  animation: wiggle 0.5s infinite alternate ease-in-out;
 }
-.edit .item:nth-child(2n) { animation-delay: 0.25s; }
-.edit .item:nth-child(3n) { animation-delay: 0.5s; }
-.edit .item:nth-child(5n) { animation-delay: 0.75s; }
+
+.items > div.disabled {
+  cursor: default;
+}
+.edit .items > div:nth-child(2n) > .item { animation-delay: 0.25s; }
+.edit .items > div:nth-child(3n) > .item { animation-delay: 0.5s; }
+.edit .items > div:nth-child(5n) > .item { animation-delay: 0.75s; }
 
 .language-choice {
   text-transform: capitalize;
@@ -178,6 +183,7 @@ button {
 .item > img {
   height: 100px;
   width: 100px;
+  pointer-events: none;
 }
 
 .allergy-choice img {
