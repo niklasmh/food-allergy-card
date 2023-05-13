@@ -109,5 +109,5 @@ export const allergiesShortNamesState = selector({
 
 export const editState = atom<boolean>({
   key: "edit",
-  default: false,
+  default: card.allergies.length === 0,
 });

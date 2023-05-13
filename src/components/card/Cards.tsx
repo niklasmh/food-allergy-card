@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { allAllergies, allLanguages } from "../../allergies";
-import { type Card as CardType, cardsState, currentCardState, colorMap } from "../../store";
+import { type Card as CardType, cardsState, currentCardState, colorMap, editState } from "../../store";
 
 export function Cards() {
   const [card] = useRecoilState(currentCardState);
@@ -32,6 +32,7 @@ type CardProps = {
 function Card({ card, newCard = false, selected = false }: CardProps) {
   const [, setCard] = useRecoilState(currentCardState);
   const [, setCards] = useRecoilState(cardsState);
+  const [, setEditMode] = useRecoilState(editState);
 
   return (
     <div
@@ -59,6 +60,7 @@ function Card({ card, newCard = false, selected = false }: CardProps) {
           history.replaceState({}, "Food Allergy Card", "/");
           setCard(modifiedCard);
           setCards((cards) => [modifiedCard, ...cards]);
+          setEditMode(true);
         } else {
           setCard(card);
         }
