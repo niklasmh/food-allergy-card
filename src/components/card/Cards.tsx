@@ -54,7 +54,7 @@ function Card({ card, newCard = false, selected = false }: CardProps) {
         minWidth: 120,
         maxWidth: 120,
         aspectRatio: 1.59,
-        backgroundImage: `linear-gradient(120deg, ${colorMap[card.color || "purple"].join(",")})`,
+        backgroundImage: `linear-gradient(120deg, ${colorMap[card.color || "dark"].join(",")})`,
       }}
       onClick={() => {
         if (newCard) {

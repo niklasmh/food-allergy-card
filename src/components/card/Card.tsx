@@ -74,7 +74,7 @@ export function Card() {
     <div className={"flex flex-col justify-center items-center mb-8 gap-16 min-h-screen" + (editMode ? " edit" : "")}>
       <div
         className={"card relative" + (editMode ? " !pb-20 gap-4" : "")}
-        style={{ backgroundImage: `linear-gradient(120deg, ${(colorMap[card.color || "purple"] || []).join(",")})` }}
+        style={{ backgroundImage: `linear-gradient(120deg, ${(colorMap[card.color || "dark"] || []).join(",")})` }}
       >
         <h1 className="title capitalize mb-8">
           {(card.name || allLanguages.find((l) => l.id === card.languages[0])?.translations["allergies"]) ??

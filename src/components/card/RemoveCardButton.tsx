@@ -17,7 +17,7 @@ export function RemoveCardButton() {
           setCard({
             allergies: [],
             languages: [],
-            color: "purple",
+            color: "dark",
             id: Math.random().toString(16).slice(2),
             name: "",
             saved: false,
