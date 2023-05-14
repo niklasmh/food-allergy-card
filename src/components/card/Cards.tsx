@@ -49,8 +49,8 @@ function Card({ card, newCard = false, selected = false }: CardProps) {
       onClick={() => {
         if (newCard) {
           const modifiedCard: CardType = {
-            allergies: [],
-            languages: [],
+            allergies: card.allergies,
+            languages: card.languages,
             color: card.color,
             isFromLink: false,
             saved: true,
