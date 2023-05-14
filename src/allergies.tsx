@@ -61,7 +61,7 @@ export type Allergy = {
 export type Allergies =
   | "almond"
   | "banana"
-  | "beans"
+  | "bean"
   | "celery"
   | "crustaceans"
   | "dairy"
@@ -75,7 +75,7 @@ export type Allergies =
   | "mustard"
   | "nut"
   | "peanut"
-  | "peas"
+  | "pea"
   | "sesame"
   | "shellfish"
   | "soy"
@@ -104,7 +104,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NO: "banan",
     },
   },
-  beans: {
+  bean: {
     shortname: "be",
     name: {
       DE: "bohnen",
@@ -244,7 +244,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NO: "peanøtter",
     },
   },
-  peas: {
+  pea: {
     shortname: "pe",
     name: {
       DE: "erbsen",
