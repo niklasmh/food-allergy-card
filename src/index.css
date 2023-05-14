@@ -190,6 +190,11 @@ button {
   pointer-events: none;
 }
 
+.item > span {
+  white-space: pre;
+  font-size: var(--font-size, 16px);
+}
+
 .allergy-choice img {
   height: 20px;
   width: 20px;
@@ -248,4 +253,81 @@ button {
 
 .color.selected {
     box-shadow: 0 0 32px -16px #000, inset 0 0 0 2px #fff8;
+}
+
+@media print {
+  body {
+    min-height: 0;
+    min-width: 0;
+    line-height: 12px;
+  }
+
+  #root {
+    padding: 0;
+    max-width: none;
+    margin: 0;
+  }
+
+  .App > *:not(:first-child),
+  .App > *:first-child > :not(.card) {
+    display: none;
+  }
+
+  .App > *:first-child {
+    min-height: 0;
+    flex-flow: row wrap;
+    gap: 0.5cm;
+  }
+
+  .card {
+    min-width: 8.56cm;
+    width: 8.56cm;
+    max-width: 8.56cm;
+
+    min-height: 5.398cm;
+    height: 5.398cm;
+    max-height: 5.398cm;
+
+    border-radius: 0.318cm;
+
+    box-shadow: none;
+    margin: 0;
+    padding: 64px 16px 42px;
+  }
+
+  .card > .title {
+    font-size: 16px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+
+  .card > .items {
+    grid-template-columns: repeat(var(--print-cols), minmax(0, 1fr));
+  }
+
+  .card .item {
+    width: 100%;
+    display: inline-block;
+    font-size: 10px;
+  }
+
+  .card .item > img {
+    width: 32px;
+    height: 32px;
+    margin: auto;
+  }
+
+  .card .item > span {
+    width: 100%;
+    display: inline-block;
+    white-space: pre;
+    vertical-align: middle;
+    font-size: var(--print-font-size, 10px);
+  }
+
+  .card .item > span:not(:first-of-type) {
+    margin-top: -2px;
+  }
 }

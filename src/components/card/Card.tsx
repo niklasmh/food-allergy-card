@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { CSSProperties, Fragment, ReactNode, useState } from "react";
+import { useRecoilState } from "recoil";
 import {
   DndContext,
   closestCenter,
@@ -25,13 +25,22 @@ import { AllergyList } from "../AllergyList";
 import { Languages } from "../Languages";
 import { AddNewLanguageButton } from "./AddNewLanguageButton";
 import { DoneButton } from "./DoneButton";
+import { PrintCardButton } from "./PrintCardButton";
 
 export function Card() {
   const [card, setCard] = useRecoilState(currentCardState);
   const [, setCards] = useRecoilState(cardsState);
-  const editMode = useRecoilValue(editState);
-  const editAllergyMode = useRecoilValue(editAllergiesState);
-  const editLanguages = useRecoilValue(editLanguagesState);
+  const [editMode, setEditMode] = useRecoilState(editState);
+  const [editAllergyMode, setEditAllergyMode] = useRecoilState(editAllergiesState);
+  const [editLanguages, setEditLanguages] = useRecoilState(editLanguagesState);
+  const [printMode, setPrintMode] = useState<boolean>(false);
+
+  const beautifyPrintGridCols = (elementCount: number): number => {
+    const printGridCols = [1, 1, 2, 3, 4, 5, 3, 4, 4, 5];
+    const l = printGridCols.length;
+    const cols = printGridCols[Math.min(elementCount, l - 1)];
+    return cols;
+  };
 
   const beautifyGrid = (elementCount: number): string => {
     const gridCols = [[1], [1], [2], [2, 3], [2, 4], [2, 3, 5], [2, 3], [2, 3, 4], [2, 3, 4], [2, 3, 5]];
@@ -70,56 +79,84 @@ export function Card() {
     }
   }
 
+  const cardElement = (
+    <div
+      className={"card relative" + (editMode ? " !pb-20 gap-4" : "")}
+      style={{ backgroundImage: `linear-gradient(120deg, ${(colorMap[card.color || "dark"] || []).join(",")})` }}
+    >
+      <h1 className="title capitalize mb-8">
+        {(card.name || allLanguages.find((l) => l.id === card.languages[0])?.translations["allergies"]) ?? "Allergies"}
+      </h1>
+      {!editAllergyMode && !editLanguages && (
+        <div
+          className={"items gap-3 w-full grid" + beautifyGrid(card.allergies.length)}
+          style={{ "--print-cols": beautifyPrintGridCols(card.allergies.length) } as CSSProperties}
+        >
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext disabled={!editMode} items={card.allergies} strategy={rectSortingStrategy}>
+              {card.allergies
+                .filter((id) => !!id)
+                .map((id) => (
+                  <SortableItem key={id} id={id} disabled={!editMode}>
+                    <AllergyItem key={id} id={id} languages={card.languages} />
+                  </SortableItem>
+                ))}
+            </SortableContext>
+          </DndContext>
+          {card.allergies.length === 0 && `(Click on "🖊️ Edit card" to add allergies)`}
+        </div>
+      )}
+      {editAllergyMode && (
+        <div className="h-full w-full flex flex-col justify-center">
+          <AllergyList />
+        </div>
+      )}
+      {editLanguages && (
+        <div className="h-full w-full flex flex-col justify-center gap-2">
+          <h2 className="text-xl">Choose languages</h2>
+          <Languages />
+        </div>
+      )}
+      {editMode && (
+        <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-4">
+          {!editLanguages && <AddNewAllergyButton />}
+          {!editAllergyMode && <AddNewLanguageButton />}
+          {editAllergyMode && editLanguages && <DoneButton />}
+        </div>
+      )}
+      {editMode && <ColorPicker />}
+    </div>
+  );
+
+  if (printMode) {
+    return (
+      <div className={"flex flex-col justify-center items-center mb-8 gap-16 min-h-screen" + (editMode ? " edit" : "")}>
+        {Array(8)
+          .fill(0)
+          .map((_, i) => (
+            <Fragment key={i}>{cardElement}</Fragment>
+          ))}
+      </div>
+    );
+  }
+
   return (
     <div className={"flex flex-col justify-center items-center mb-8 gap-16 min-h-screen" + (editMode ? " edit" : "")}>
-      <div
-        className={"card relative" + (editMode ? " !pb-20 gap-4" : "")}
-        style={{ backgroundImage: `linear-gradient(120deg, ${(colorMap[card.color || "dark"] || []).join(",")})` }}
-      >
-        <h1 className="title capitalize mb-8">
-          {(card.name || allLanguages.find((l) => l.id === card.languages[0])?.translations["allergies"]) ??
-            "Allergies"}
-        </h1>
-        {!editAllergyMode && !editLanguages && (
-          <div className={"items gap-3 w-full grid" + beautifyGrid(card.allergies.length)}>
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-              <SortableContext disabled={!editMode} items={card.allergies} strategy={rectSortingStrategy}>
-                {card.allergies
-                  .filter((id) => !!id)
-                  .map((id) => (
-                    <SortableItem key={id} id={id} disabled={!editMode}>
-                      <AllergyItem key={id} id={id} languages={card.languages} />
-                    </SortableItem>
-                  ))}
-              </SortableContext>
-            </DndContext>
-            {card.allergies.length === 0 && `(Click on "🖊️ Edit card" to add allergies)`}
-          </div>
-        )}
-        {editAllergyMode && (
-          <div className="h-full w-full flex flex-col justify-center">
-            <AllergyList />
-          </div>
-        )}
-        {editLanguages && (
-          <div className="h-full w-full flex flex-col justify-center gap-2">
-            <h2 className="text-xl">Choose languages</h2>
-            <Languages />
-          </div>
-        )}
-        {editMode && (
-          <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-4">
-            {!editLanguages && <AddNewAllergyButton />}
-            {!editAllergyMode && <AddNewLanguageButton />}
-            {editAllergyMode && editLanguages && <DoneButton />}
-          </div>
-        )}
-        {editMode && <ColorPicker />}
-      </div>
-
-      <div className="flex flex-row w-full items-start gap-4">
+      {cardElement}
+      <div className="flex flex-row w-full items-start justify-between flex-wrap gap-4">
         <EditCardButton />
-        <div className="flex-1" />
+        <PrintCardButton
+          onClick={() => {
+            setEditMode(false);
+            setEditAllergyMode(false);
+            setEditLanguages(false);
+            setPrintMode(true);
+            setTimeout(() => {
+              print();
+              setPrintMode(false);
+            }, 100);
+          }}
+        />
         <RemoveCardButton />
       </div>
       {card.isFromLink && <SaveToCards />}
