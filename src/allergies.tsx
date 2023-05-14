@@ -61,6 +61,7 @@ export type Allergy = {
 export type Allergies =
   | "almond"
   | "banana"
+  | "beans"
   | "celery"
   | "crustaceans"
   | "dairy"
@@ -74,6 +75,7 @@ export type Allergies =
   | "mustard"
   | "nut"
   | "peanut"
+  | "peas"
   | "sesame"
   | "shellfish"
   | "soy"
@@ -100,6 +102,16 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       ES: "plátano",
       NL: "banaan",
       NO: "banan",
+    },
+  },
+  beans: {
+    shortname: "be",
+    name: {
+      DE: "bohnen",
+      EN: "beans",
+      ES: "frijoles",
+      NL: "bonen",
+      NO: "bønner",
     },
   },
   celery: {
@@ -230,6 +242,16 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       ES: "cacahuates",
       NL: "pinda",
       NO: "peanøtter",
+    },
+  },
+  peas: {
+    shortname: "pe",
+    name: {
+      DE: "erbsen",
+      EN: "peas",
+      ES: "guisantes",
+      NL: "erwten",
+      NO: "erter",
     },
   },
   sesame: {
