@@ -52,6 +52,7 @@ export const allLanguages: Language[] = [
 
 export type Allergy = {
   shortname: string;
+  important?: boolean;
   name: {
     [LanguageCode in Languages]: string;
   };
@@ -62,20 +63,25 @@ export type Allergies =
   | "almond"
   | "banana"
   | "bean"
+  | "capsicum"
   | "celery"
   | "crustaceans"
   | "dairy"
   | "egg"
+  | "fenugreek"
   | "fish"
   | "gluten"
   | "kiwi"
+  | "legume"
   | "lupin"
   | "milk"
   | "molluscs"
   | "mustard"
   | "nut"
+  | "onion"
   | "peanut"
   | "pea"
+  | "pepper"
   | "sesame"
   | "shellfish"
   | "soy"
@@ -86,6 +92,7 @@ export type Allergies =
 export const allAllergies: { [id in Allergies]: Allergy } = {
   almond: {
     shortname: "a",
+    important: true,
     name: {
       DE: "mandeln",
       EN: "almonds",
@@ -114,8 +121,19 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NO: "bønner",
     },
   },
+  capsicum: {
+    shortname: "ca",
+    name: {
+      DE: "paprika",
+      EN: "capsicum",
+      ES: "pimiento",
+      NL: "paprika",
+      NO: "paprika",
+    },
+  },
   celery: {
     shortname: "ce",
+    important: true,
     name: {
       DE: "sellerie",
       EN: "celery",
@@ -126,6 +144,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
   },
   crustaceans: {
     shortname: "cr",
+    important: true,
     name: {
       DE: "krebstiere",
       EN: "crustaceans",
@@ -136,6 +155,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
   },
   dairy: {
     shortname: "d",
+    important: true,
     name: {
       DE: "molkerei",
       EN: "dairy",
@@ -146,6 +166,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
   },
   egg: {
     shortname: "e",
+    important: true,
     name: {
       DE: "ei",
       EN: "egg",
@@ -154,8 +175,19 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NO: "egg",
     },
   },
+  fenugreek: {
+    shortname: "fe",
+    name: {
+      DE: "bockshornklee",
+      EN: "fenugreek",
+      ES: "fenogreco",
+      NL: "fenegriek",
+      NO: "bukkehornkløver",
+    },
+  },
   fish: {
     shortname: "f",
+    important: true,
     name: {
       DE: "fische",
       EN: "fish",
@@ -166,6 +198,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
   },
   gluten: {
     shortname: "g",
+    important: true,
     name: {
       DE: "gluten",
       EN: "gluten",
@@ -184,8 +217,20 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NO: "kiwi",
     },
   },
+  legume: {
+    shortname: "le",
+    important: true,
+    name: {
+      DE: "hülsenfrucht",
+      EN: "legume",
+      ES: "legumbre",
+      NL: "peulvrucht",
+      NO: "belgfrukt",
+    },
+  },
   lupin: {
     shortname: "l",
+    important: true,
     name: {
       DE: "lupine",
       EN: "lupin",
@@ -196,6 +241,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
   },
   milk: {
     shortname: "m",
+    important: true,
     name: {
       DE: "milch",
       EN: "milk",
@@ -206,6 +252,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
   },
   molluscs: {
     shortname: "mo",
+    important: true,
     name: {
       DE: "weichtiere",
       EN: "molluscs",
@@ -216,6 +263,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
   },
   mustard: {
     shortname: "mu",
+    important: true,
     name: {
       DE: "senf",
       EN: "mustard",
@@ -226,6 +274,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
   },
   nut: {
     shortname: "n",
+    important: true,
     name: {
       DE: "nüsse",
       EN: "nuts",
@@ -234,8 +283,19 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NO: "nøtter",
     },
   },
+  onion: {
+    shortname: "o",
+    name: {
+      DE: "zwiebel",
+      EN: "onion",
+      ES: "cebolla",
+      NL: "ui",
+      NO: "løk",
+    },
+  },
   peanut: {
     shortname: "p",
+    important: true,
     name: {
       DE: "erdnuss",
       EN: "peanuts",
@@ -256,6 +316,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
   },
   sesame: {
     shortname: "se",
+    important: true,
     name: {
       DE: "sesame",
       EN: "sesame",
@@ -266,6 +327,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
   },
   shellfish: {
     shortname: "sh",
+    important: true,
     name: {
       DE: "schaltier",
       EN: "shellfish",
@@ -276,6 +338,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
   },
   soy: {
     shortname: "so",
+    important: true,
     name: {
       DE: "soja",
       EN: "soy",
@@ -286,6 +349,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
   },
   sulfites: {
     shortname: "su",
+    important: true,
     name: {
       DE: "sulfite",
       EN: "sulfites",
@@ -294,8 +358,19 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NO: "sulfitter",
     },
   },
+  pepper: {
+    shortname: "pe",
+    name: {
+      DE: "pfeffer",
+      EN: "pepper",
+      ES: "pimienta",
+      NL: "peper",
+      NO: "pepper",
+    },
+  },
   treeNut: {
     shortname: "tn",
+    important: true,
     name: {
       DE: "baumnuss",
       EN: "tree nuts",
@@ -306,6 +381,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
   },
   wheat: {
     shortname: "w",
+    important: true,
     name: {
       DE: "weizen",
       EN: "wheat",
