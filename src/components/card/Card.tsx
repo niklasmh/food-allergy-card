@@ -93,7 +93,7 @@ export function Card() {
                   ))}
               </SortableContext>
             </DndContext>
-            {card.allergies.length === 0 && "(Add allergies on the bottom of the site)"}
+            {card.allergies.length === 0 && `(Click on "🖊️ Edit card" to add allergies)`}
           </div>
         )}
         {editAllergyMode && (
