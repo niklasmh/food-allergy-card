@@ -1,6 +1,14 @@
 import { useRecoilState } from "recoil";
 import { allAllergies, allLanguages } from "../../allergies";
-import { type Card as CardType, cardsState, currentCardState, colorMap, editState } from "../../store";
+import {
+  type Card as CardType,
+  cardsState,
+  currentCardState,
+  colorMap,
+  editState,
+  editAllergiesState,
+  editLanguagesState,
+} from "../../store";
 
 export function Cards() {
   const [card] = useRecoilState(currentCardState);
@@ -33,6 +41,8 @@ function Card({ card, newCard = false, selected = false }: CardProps) {
   const [, setCard] = useRecoilState(currentCardState);
   const [, setCards] = useRecoilState(cardsState);
   const [, setEditMode] = useRecoilState(editState);
+  const [, setEditAllergy] = useRecoilState(editAllergiesState);
+  const [, setEditLanguage] = useRecoilState(editLanguagesState);
 
   return (
     <div
@@ -63,6 +73,9 @@ function Card({ card, newCard = false, selected = false }: CardProps) {
           setEditMode(true);
         } else {
           setCard(card);
+          setEditMode(false);
+          setEditAllergy(false);
+          setEditLanguage(false);
         }
       }}
     >

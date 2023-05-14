@@ -85,9 +85,11 @@ export const currentCardState = atom<Card>({
   ],
 });
 
+const cards = getFromPersistentStorage<Card[]>("cards", []);
+
 export const cardsState = atom<Card[]>({
   key: "cards",
-  default: getFromPersistentStorage<Card[]>("cards", []),
+  default: cards?.length ? cards : [card],
   effects: [
     ({ onSet, setSelf }) => {
       onSet((cards) => {

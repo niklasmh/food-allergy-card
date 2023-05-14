@@ -25,7 +25,7 @@ export function Languages() {
   };
 
   const labelStyle = "language-choice flex flex-row w-40 px-3 py-1 gap-2 cursor-pointer";
-  const selectedStyle = " green-btn";
+  const selectedStyle = " selected-btn";
 
   return (
     <div className="flex flex-col items-center gap-1">

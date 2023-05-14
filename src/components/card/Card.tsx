@@ -24,6 +24,7 @@ import { AddNewAllergyButton } from "./AddNewAllergyButton";
 import { AllergyList } from "../AllergyList";
 import { Languages } from "../Languages";
 import { AddNewLanguageButton } from "./AddNewLanguageButton";
+import { DoneButton } from "./DoneButton";
 
 export function Card() {
   const [card, setCard] = useRecoilState(currentCardState);
@@ -72,7 +73,7 @@ export function Card() {
   return (
     <div className={"flex flex-col justify-center items-center mb-8 gap-16 min-h-screen" + (editMode ? " edit" : "")}>
       <div
-        className={"card relative" + (editMode ? " !pb-20" : "")}
+        className={"card relative" + (editMode ? " !pb-20 gap-4" : "")}
         style={{ backgroundImage: `linear-gradient(120deg, ${(colorMap[card.color || "purple"] || []).join(",")})` }}
       >
         <h1 className="title capitalize mb-8">
@@ -101,8 +102,8 @@ export function Card() {
           </div>
         )}
         {editLanguages && (
-          <div className="h-full w-full flex flex-col justify-center">
-            <p className="dimmed-text">(The order you select matters)</p>
+          <div className="h-full w-full flex flex-col justify-center gap-2">
+            <h2 className="text-xl">Choose languages</h2>
             <Languages />
           </div>
         )}
@@ -110,6 +111,7 @@ export function Card() {
           <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-4">
             {!editLanguages && <AddNewAllergyButton />}
             {!editAllergyMode && <AddNewLanguageButton />}
+            {editAllergyMode && editLanguages && <DoneButton />}
           </div>
         )}
         {editMode && <ColorPicker />}
