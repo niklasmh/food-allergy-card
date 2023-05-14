@@ -111,3 +111,13 @@ export const editState = atom<boolean>({
   key: "edit",
   default: card.allergies.length === 0,
 });
+
+export const editAllergiesState = atom<boolean>({
+  key: "editAllergies",
+  default: card.allergies.length === 0,
+});
+
+export const editLanguagesState = atom<boolean>({
+  key: "editLanguages",
+  default: card.allergies.length === 0,
+});

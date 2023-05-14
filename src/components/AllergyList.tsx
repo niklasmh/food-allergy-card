@@ -25,25 +25,22 @@ export function AllergyList() {
   };
 
   const labelStyle = "allergy-item flex flex-row items-center px-3 py-1 gap-2 cursor-pointer";
-  const selectedStyle = " rounded-md green-btn";
+  const selectedStyle = " rounded-md selected-btn";
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1>Allergies</h1>
-      <div className="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 grid-cols-1 items-center gap-1">
-        {Object.entries(allAllergies).map(([id, { name }]) => {
-          const allergy = id as Allergies;
-          const checked = card.allergies.includes(allergy);
-          return (
-            <label key={id} className={labelStyle + (checked ? selectedStyle : "")}>
-              <input type="checkbox" id={id} checked={checked} onChange={handleAllergyChange} />
-              <img src={id + ".png"} alt={name.EN} className="w-5 h-5 blend-img" />{" "}
-              <span className="overflow-x-hidden text-ellipsis capitalize">{name["EN"]}</span>
-              {checked ? <span className="ml-auto">{card.allergies.indexOf(allergy) + 1}.</span> : null}
-            </label>
-          );
-        })}
-      </div>
+    <div className="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 grid-cols-1 items-center gap-1">
+      {Object.entries(allAllergies).map(([id, { name }]) => {
+        const allergy = id as Allergies;
+        const checked = card.allergies.includes(allergy);
+        return (
+          <label key={id} className={labelStyle + (checked ? selectedStyle : "")}>
+            <input type="checkbox" id={id} checked={checked} onChange={handleAllergyChange} />
+            <img src={id + ".png"} alt={name.EN} className="w-5 h-5 blend-img" />{" "}
+            <span className="overflow-x-hidden text-ellipsis capitalize">{name["EN"]}</span>
+            {checked ? <span className="ml-auto">{card.allergies.indexOf(allergy) + 1}.</span> : null}
+          </label>
+        );
+      })}
     </div>
   );
 }

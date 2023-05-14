@@ -1,12 +1,19 @@
 import { useRecoilState } from "recoil";
-import { editState } from "../../store";
+import { editAllergiesState, editState } from "../../store";
 
 export function EditCardButton() {
   const [edit, setEdit] = useRecoilState(editState);
+  const [, setEditAllergy] = useRecoilState(editAllergiesState);
 
   if (edit) {
     return (
-      <button className="success-btn" onClick={() => setEdit(false)}>
+      <button
+        className="success-btn"
+        onClick={() => {
+          setEdit(false);
+          setEditAllergy(false);
+        }}
+      >
         💾 Save card
       </button>
     );

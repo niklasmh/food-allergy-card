@@ -28,22 +28,18 @@ export function Languages() {
   const selectedStyle = " green-btn";
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1>Languages</h1>
-      <p className="dimmed-text">(The order you select matters)</p>
-      <div className="flex flex-col items-center gap-1">
-        {allLanguages.map(({ id, longName, icon }) => {
-          const checked = card.languages.includes(id);
-          return (
-            <label key={id} className={labelStyle + (checked ? selectedStyle : "")}>
-              <input type="checkbox" id={id} checked={checked} onChange={handleLanguageChange} />
-              {icon}
-              <span className="overflow-x-hidden text-ellipsis capitalize">{longName}</span>
-              {checked ? <span className="ml-auto">{card.languages.indexOf(id) + 1}.</span> : null}
-            </label>
-          );
-        })}
-      </div>
+    <div className="flex flex-col items-center gap-1">
+      {allLanguages.map(({ id, longName, icon }) => {
+        const checked = card.languages.includes(id);
+        return (
+          <label key={id} className={labelStyle + (checked ? selectedStyle : "")}>
+            <input type="checkbox" id={id} checked={checked} onChange={handleLanguageChange} />
+            {icon}
+            <span className="overflow-x-hidden text-ellipsis capitalize">{longName}</span>
+            {checked ? <span className="ml-auto">{card.languages.indexOf(id) + 1}.</span> : null}
+          </label>
+        );
+      })}
     </div>
   );
 }

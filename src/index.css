@@ -51,9 +51,9 @@ button {
   padding: 8px 12px;
 }
 
-.green-btn {
-  box-shadow: inset 0 0 0 2px #82b763;
-  background: linear-gradient(120deg, #5a7849, #51733e);
+.selected-btn {
+  box-shadow: inset 0 0 0 2px #fff4;
+  background: linear-gradient(120deg, #fff2, #fff3);
   border-radius: 6px;
 }
 
@@ -65,6 +65,10 @@ button {
 .danger-btn {
   background: linear-gradient(120deg, #ED213A, #93291E);
   border-radius: 6px;
+}
+
+.add-new-btn {
+  background: linear-gradient(120deg, #fff3, #fff2);
 }
 
 @media (prefers-color-scheme: light) {
@@ -82,8 +86,8 @@ button {
     opacity: 0.6;
   }
 
-  .green-btn {
-    box-shadow: inset 0 0 0 2px #82b76300;
+  .selected-btn {
+    box-shadow: inset 0 0 0 2px #fff;
     background: #eee;
   }
 }

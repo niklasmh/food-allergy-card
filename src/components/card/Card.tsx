@@ -13,18 +13,24 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStr
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { allLanguages } from "../../allergies";
-import { cardsState, colorMap, currentCardState, editState } from "../../store";
+import { cardsState, colorMap, currentCardState, editAllergiesState, editLanguagesState, editState } from "../../store";
 import { Cards } from "./Cards";
 import { ColorPicker } from "./ColorPicker";
 import { EditCardButton } from "./EditCardButton";
 import { RemoveCardButton } from "./RemoveCardButton";
 import { SaveToCards } from "./SaveToCards";
 import { AllergyItem } from "./AllergyItem";
+import { AddNewAllergyButton } from "./AddNewAllergyButton";
+import { AllergyList } from "../AllergyList";
+import { Languages } from "../Languages";
+import { AddNewLanguageButton } from "./AddNewLanguageButton";
 
 export function Card() {
   const [card, setCard] = useRecoilState(currentCardState);
   const [, setCards] = useRecoilState(cardsState);
   const editMode = useRecoilValue(editState);
+  const editAllergyMode = useRecoilValue(editAllergiesState);
+  const editLanguages = useRecoilValue(editLanguagesState);
 
   const beautifyGrid = (elementCount: number): string => {
     const gridCols = [[1], [1], [2], [2, 3], [2, 4], [2, 3, 5], [2, 3], [2, 3, 4], [2, 3, 4], [2, 3, 5]];
@@ -66,27 +72,46 @@ export function Card() {
   return (
     <div className={"flex flex-col justify-center items-center mb-8 gap-16 min-h-screen" + (editMode ? " edit" : "")}>
       <div
-        className="card relative"
+        className={"card relative" + (editMode ? " !pb-20" : "")}
         style={{ backgroundImage: `linear-gradient(120deg, ${(colorMap[card.color || "purple"] || []).join(",")})` }}
       >
         <h1 className="title capitalize mb-8">
           {(card.name || allLanguages.find((l) => l.id === card.languages[0])?.translations["allergies"]) ??
             "Allergies"}
         </h1>
-        <div className={"items gap-3 w-full grid" + beautifyGrid(card.allergies.length)}>
-          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-            <SortableContext disabled={!editMode} items={card.allergies} strategy={rectSortingStrategy}>
-              {card.allergies
-                .filter((id) => !!id)
-                .map((id) => (
-                  <SortableItem key={id} id={id} disabled={!editMode}>
-                    <AllergyItem key={id} id={id} languages={card.languages} />
-                  </SortableItem>
-                ))}
-            </SortableContext>
-          </DndContext>
-          {card.allergies.length === 0 && "(Add allergies on the bottom of the site)"}
-        </div>
+        {!editAllergyMode && !editLanguages && (
+          <div className={"items gap-3 w-full grid" + beautifyGrid(card.allergies.length)}>
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+              <SortableContext disabled={!editMode} items={card.allergies} strategy={rectSortingStrategy}>
+                {card.allergies
+                  .filter((id) => !!id)
+                  .map((id) => (
+                    <SortableItem key={id} id={id} disabled={!editMode}>
+                      <AllergyItem key={id} id={id} languages={card.languages} />
+                    </SortableItem>
+                  ))}
+              </SortableContext>
+            </DndContext>
+            {card.allergies.length === 0 && "(Add allergies on the bottom of the site)"}
+          </div>
+        )}
+        {editAllergyMode && (
+          <div className="h-full w-full flex flex-col justify-center">
+            <AllergyList />
+          </div>
+        )}
+        {editLanguages && (
+          <div className="h-full w-full flex flex-col justify-center">
+            <p className="dimmed-text">(The order you select matters)</p>
+            <Languages />
+          </div>
+        )}
+        {editMode && (
+          <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-4">
+            {!editLanguages && <AddNewAllergyButton />}
+            {!editAllergyMode && <AddNewLanguageButton />}
+          </div>
+        )}
         {editMode && <ColorPicker />}
       </div>
 
