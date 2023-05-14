@@ -4,14 +4,13 @@ Website: [allergy.niklasmh.no](https://allergy.niklasmh.no)
 
 Make it easier to show the chefs your allergies. Features:
 
-- 21 predefined allergies (both groups and specifics).
+- 28 predefined allergies (both groups and specifics).
 - Images for all the predefined allergies.
 - Translated into English, German, Spanish and Norwegian (can show multiple languages at the same time, as well).
 - QR code and an URL for sharing your allergies with the chefs. For example this:
   ![Example QR code](example-qr.png)
-- Add custom allergies (cannot add images and translations to them for now).
 - Made for being shown from a mobile device.
-- Possible to print the card out into physical cards (still working on this).
+- Possible to print the card out into physical cards.
 
 ## Support this project
 
