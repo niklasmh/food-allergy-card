@@ -10,7 +10,7 @@ Make it easier to show the chefs your allergies. Features:
 - QR code and an URL for sharing your allergies with the chefs. For example this:
   ![Example QR code](example-qr.png)
 - Made for being shown from a mobile device.
-- Possible to print the card out into physical cards.
+- Print the card out into physical cards.
 
 ## Support this project
 
