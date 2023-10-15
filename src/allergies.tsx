@@ -1,4 +1,4 @@
-export type Languages = "DE" | "EN" | "ES" | "NL" | "NO" | "FR" | "PT";
+export type Languages = "DE" | "EN" | "ES" | "NL" | "NO" | "FR" | "PT" | "ZN";
 
 type Language = {
   id: Languages;
@@ -62,6 +62,14 @@ export const allLanguages: Language[] = [
     icon: "🇵🇹",
     translations: {
       allergies: "alergias",
+    },
+  },
+  {
+    id: "ZN",
+    longName: "中文",
+    icon: "🇨🇳",
+    translations: {
+      allergies: "过敏",
     },
   },
 ];
@@ -315,6 +323,36 @@ const allergiesPerLanguage: { [key in Languages]: { [id in Allergies]: string } 
     sulfites: "sulfitos",
     treeNut: "nozes de árvore",
     wheat: "trigo",
+  },
+  ZN: {
+    almond: "杏仁",
+    banana: "香蕉",
+    bean: "豆子",
+    capsicum: "辣椒",
+    celery: "芹菜",
+    crustaceans: "甲壳类",
+    dairy: "乳制品",
+    egg: "鸡蛋",
+    fenugreek: "葫芦巴",
+    fish: "鱼",
+    gluten: "麸质",
+    kiwi: "猕猴桃",
+    legume: "豆类",
+    lupin: "羽扇豆",
+    milk: "牛奶",
+    molluscs: "软体动物",
+    mustard: "芥末",
+    nut: "坚果",
+    onion: "洋葱",
+    peanut: "花生",
+    pea: "豌豆",
+    pepper: "胡椒",
+    sesame: "芝麻",
+    shellfish: "贝类",
+    soy: "大豆",
+    sulfites: "亚硫酸盐",
+    treeNut: "坚果",
+    wheat: "小麦",
   },
 };
 
