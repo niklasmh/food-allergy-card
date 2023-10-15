@@ -1,4 +1,4 @@
-export type Languages = "DE" | "EN" | "ES" | "NL" | "NO" | "FR" | "PT" | "ZN";
+export type Languages = "DE" | "EN" | "ES" | "JP" | "NL" | "NO" | "FR" | "PT" | "ZN";
 
 type Language = {
   id: Languages;
@@ -30,6 +30,14 @@ export const allLanguages: Language[] = [
     icon: "🇪🇸",
     translations: {
       allergies: "alergias",
+    },
+  },
+  {
+    id: "JP",
+    longName: "日本語",
+    icon: "🇯🇵",
+    translations: {
+      allergies: "アレルギー",
     },
   },
   {
@@ -203,6 +211,36 @@ const allergiesPerLanguage: { [key in Languages]: { [id in Allergies]: string } 
     sulfites: "sulfitos",
     treeNut: "frutos secos",
     wheat: "trigo",
+  },
+  JP: {
+    almond: "アーモンド",
+    banana: "バナナ",
+    bean: "豆",
+    capsicum: "ピーマン",
+    celery: "セロリ",
+    crustaceans: "甲殻類",
+    dairy: "乳製品",
+    egg: "卵",
+    fenugreek: "フェヌグリーク",
+    fish: "魚",
+    gluten: "グルテン",
+    kiwi: "キウイ",
+    legume: "豆",
+    lupin: "ルピナス",
+    milk: "牛乳",
+    molluscs: "軟体動物",
+    mustard: "マスタード",
+    nut: "ナッツ",
+    onion: "玉ねぎ",
+    peanut: "ピーナッツ",
+    pea: "豌豆",
+    pepper: "胡椒",
+    sesame: "ゴマ",
+    shellfish: "貝",
+    soy: "大豆",
+    sulfites: "亜硫酸塩",
+    treeNut: "木の実",
+    wheat: "小麦",
   },
   NL: {
     almond: "amandelen",
