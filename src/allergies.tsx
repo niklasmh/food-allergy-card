@@ -1,4 +1,4 @@
-export type Languages = "DE" | "EN" | "ES" | "NL" | "NO" | "FR";
+export type Languages = "DE" | "EN" | "ES" | "NL" | "NO" | "FR" | "PT";
 
 type Language = {
   id: Languages;
@@ -56,6 +56,14 @@ export const allLanguages: Language[] = [
       allergies: "allergies",
     },
   },
+  {
+    id: "PT",
+    longName: "português",
+    icon: "🇵🇹",
+    translations: {
+      allergies: "alergias",
+    },
+  },
 ];
 
 export type Allergy = {
@@ -108,6 +116,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "amandelen",
       NO: "mandler",
       FR: "amandes",
+      PT: "amêndoas",
     },
   },
   banana: {
@@ -119,6 +128,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "banaan",
       NO: "banan",
       FR: "banane",
+      PT: "banana",
     },
   },
   bean: {
@@ -130,6 +140,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "bonen",
       NO: "bønner",
       FR: "haricots",
+      PT: "feijões",
     },
   },
   capsicum: {
@@ -141,6 +152,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "paprika",
       NO: "paprika",
       FR: "poivron",
+      PT: "pimentão",
     },
   },
   celery: {
@@ -153,6 +165,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "selderij",
       NO: "selleri",
       FR: "céleri",
+      PT: "aipo",
     },
   },
   crustaceans: {
@@ -165,6 +178,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "schaaldier",
       NO: "krepsdyr",
       FR: "crustacés",
+      PT: "crustáceos",
     },
   },
   dairy: {
@@ -177,6 +191,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "zuivel",
       NO: "meieri",
       FR: "produits laitiers",
+      PT: "laticínios",
     },
   },
   egg: {
@@ -189,6 +204,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "ei",
       NO: "egg",
       FR: "oeuf",
+      PT: "ovo",
     },
   },
   fenugreek: {
@@ -200,6 +216,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "fenegriek",
       NO: "bukkehornkløver",
       FR: "fenugrec",
+      PT: "feno-grego",
     },
   },
   fish: {
@@ -212,6 +229,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "vis",
       NO: "fisk",
       FR: "poisson",
+      PT: "peixe",
     },
   },
   gluten: {
@@ -224,6 +242,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "gluten",
       NO: "gluten",
       FR: "gluten",
+      PT: "glúten",
     },
   },
   kiwi: {
@@ -235,6 +254,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "kiwi",
       NO: "kiwi",
       FR: "kiwi",
+      PT: "kiwi",
     },
   },
   legume: {
@@ -247,6 +267,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "peulvrucht",
       NO: "belgfrukt",
       FR: "légumineuse",
+      PT: "legume",
     },
   },
   lupin: {
@@ -259,6 +280,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "wolvin",
       NO: "lupin",
       FR: "lupin",
+      PT: "lupino",
     },
   },
   milk: {
@@ -271,6 +293,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "melk",
       NO: "melk",
       FR: "lait",
+      PT: "leite",
     },
   },
   molluscs: {
@@ -283,6 +306,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "weekdieren",
       NO: "bløtdyr",
       FR: "mollusques",
+      PT: "moluscos",
     },
   },
   mustard: {
@@ -295,6 +319,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "mosterd",
       NO: "sennep",
       FR: "moutarde",
+      PT: "mostarda",
     },
   },
   nut: {
@@ -307,6 +332,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "noten",
       NO: "nøtter",
       FR: "noix",
+      PT: "nozes",
     },
   },
   onion: {
@@ -318,6 +344,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "ui",
       NO: "løk",
       FR: "oignon",
+      PT: "cebola",
     },
   },
   peanut: {
@@ -330,6 +357,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "pinda",
       NO: "peanøtter",
       FR: "cacahuètes",
+      PT: "amendoim",
     },
   },
   pea: {
@@ -341,6 +369,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "erwten",
       NO: "erter",
       FR: "pois",
+      PT: "ervilhas",
     },
   },
   sesame: {
@@ -353,6 +382,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "sesam zaden",
       NO: "sesamfrø",
       FR: "sésame",
+      PT: "gergelim",
     },
   },
   shellfish: {
@@ -365,6 +395,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "schelpdieren",
       NO: "skalldyr",
       FR: "fruits de mer",
+      PT: "mariscos",
     },
   },
   soy: {
@@ -377,6 +408,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "soja",
       NO: "soya",
       FR: "soja",
+      PT: "soja",
     },
   },
   sulfites: {
@@ -389,6 +421,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "sulfieten",
       NO: "sulfitter",
       FR: "sulfites",
+      PT: "sulfitos",
     },
   },
   pepper: {
@@ -400,6 +433,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "peper",
       NO: "pepper",
       FR: "poivre",
+      PT: "pimenta",
     },
   },
   treeNut: {
@@ -412,6 +446,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "boom noten",
       NO: "trenøtter",
       FR: "noix de l'arbre",
+      PT: "nozes de árvore",
     },
   },
   wheat: {
@@ -424,6 +459,7 @@ export const allAllergies: { [id in Allergies]: Allergy } = {
       NL: "tarwe",
       NO: "hvete",
       FR: "blé",
+      PT: "trigo",
     },
   },
 };
