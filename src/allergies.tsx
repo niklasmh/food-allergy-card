@@ -1,4 +1,4 @@
-export type Languages = "DE" | "EN" | "ES" | "JP" | "NL" | "NO" | "FR" | "PT" | "ZN";
+export type Languages = "DE" | "EN" | "ES" | "JP" | "IT" | "NL" | "NO" | "FR" | "PT" | "ZN";
 
 type Language = {
   id: Languages;
@@ -38,6 +38,14 @@ export const allLanguages: Language[] = [
     icon: "🇯🇵",
     translations: {
       allergies: "アレルギー",
+    },
+  },
+  {
+    id: "IT",
+    longName: "italiano",
+    icon: "🇮🇹",
+    translations: {
+      allergies: "allergie",
     },
   },
   {
@@ -241,6 +249,36 @@ const allergiesPerLanguage: { [key in Languages]: { [id in Allergies]: string } 
     sulfites: "亜硫酸塩",
     treeNut: "木の実",
     wheat: "小麦",
+  },
+  IT: {
+    almond: "mandorle",
+    banana: "banana",
+    bean: "fagioli",
+    capsicum: "peperone",
+    celery: "sedano",
+    crustaceans: "crostacei",
+    dairy: "latticini",
+    egg: "uovo",
+    fenugreek: "fieno greco",
+    fish: "pesce",
+    gluten: "glutine",
+    kiwi: "kiwi",
+    legume: "legume",
+    lupin: "lupino",
+    milk: "latte",
+    molluscs: "molluschi",
+    mustard: "senape",
+    nut: "noci",
+    onion: "cipolla",
+    peanut: "arachidi",
+    pea: "piselli",
+    pepper: "pepe",
+    sesame: "sesamo",
+    shellfish: "frutti di mare",
+    soy: "soia",
+    sulfites: "solfati",
+    treeNut: "noci",
+    wheat: "grano",
   },
   NL: {
     almond: "amandelen",
