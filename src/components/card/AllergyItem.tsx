@@ -1,5 +1,7 @@
 import { CSSProperties } from "react";
 import { Allergies, Languages, allAllergies } from "../../allergies";
+import { useStore, useAllergy } from "../../store";
+import { SeverityPicker } from "./SeverityPicker";
 
 type AllergyItemProps = {
   id: Allergies;
@@ -17,6 +19,10 @@ const calcFontSize = (text: string): string => {
 };
 
 export function AllergyItem({ id, languages }: AllergyItemProps) {
+  const { editMode } = useStore();
+  const allergy = useAllergy(id);
+  const severity = allergy?.severity;
+
   if (id in allAllergies) {
     return (
       <div className="item">
@@ -32,9 +38,13 @@ export function AllergyItem({ id, languages }: AllergyItemProps) {
               } as CSSProperties
             }
           >
+            {severity === 1 && "🟢 "}
+            {severity === 2 && "🟠 "}
+            {severity === 3 && "🔴 "}
             {allAllergies[id].name[language]}
           </span>
         ))}
+        {editMode && severity && <SeverityPicker allergyId={id} severity={severity} />}
       </div>
     );
   }

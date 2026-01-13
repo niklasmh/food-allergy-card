@@ -1,19 +1,14 @@
-import { useRecoilState } from "recoil";
 import { allAllergies, allLanguages } from "../../allergies";
 import {
   type Card as CardType,
-  cardsState,
-  currentCardState,
-  colorMap,
-  editState,
-  editAllergiesState,
-  editLanguagesState,
+  useStore,
 } from "../../store";
+import { darkenHexColor } from "../../utils/colors";
 
 export function Cards() {
-  const [card] = useRecoilState(currentCardState);
+  const card = useStore((state) => state.currentCard);
   const cardId = card?.id;
-  const [cards] = useRecoilState(cardsState);
+  const cards = useStore((state) => state.cards);
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -38,11 +33,14 @@ type CardProps = {
 };
 
 function Card({ card, newCard = false, selected = false }: CardProps) {
-  const [, setCard] = useRecoilState(currentCardState);
-  const [, setCards] = useRecoilState(cardsState);
-  const [, setEditMode] = useRecoilState(editState);
-  const [, setEditAllergy] = useRecoilState(editAllergiesState);
-  const [, setEditLanguage] = useRecoilState(editLanguagesState);
+  const {
+    setCard,
+    cards,
+    setCards,
+    setEditMode,
+    setEditAllergiesMode: setEditAllergy,
+    setEditLanguagesMode: setEditLanguage,
+  } = useStore();
 
   return (
     <div
@@ -54,7 +52,7 @@ function Card({ card, newCard = false, selected = false }: CardProps) {
         minWidth: 120,
         maxWidth: 120,
         aspectRatio: 1.59,
-        backgroundImage: `linear-gradient(120deg, ${colorMap[card.color || "dark"].join(",")})`,
+        backgroundImage: `linear-gradient(120deg, ${card.color}, ${darkenHexColor(card.color, 50)})`,
       }}
       onClick={() => {
         if (newCard) {
@@ -69,7 +67,7 @@ function Card({ card, newCard = false, selected = false }: CardProps) {
           };
           history.replaceState({}, "Food Allergy Card", "/");
           setCard(modifiedCard);
-          setCards((cards) => [modifiedCard, ...cards]);
+          setCards([modifiedCard, ...cards]);
           setEditMode(true);
         } else {
           setCard(card);
@@ -96,11 +94,11 @@ function Card({ card, newCard = false, selected = false }: CardProps) {
               fontSize: Math.max(12, Math.min(21, (96 - 4 * (card.allergies.length - 1)) / card.allergies.length)),
             }}
           >
-            {card.allergies.map((id) => (
+            {card.allergies.map((allergy) => (
               <img
-                key={id}
-                src={id + ".png"}
-                alt={allAllergies[id].name.EN}
+                key={allergy.id}
+                src={allergy.id + ".png"}
+                alt={allAllergies[allergy.id].name.EN}
                 className="blend-img"
                 style={{ width: "1em", height: "1em" }}
               />

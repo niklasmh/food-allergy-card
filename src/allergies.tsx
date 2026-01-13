@@ -1,4 +1,4 @@
-export type Languages = "DE" | "EN" | "ES" | "JP" | "IT" | "NL" | "NO" | "FR" | "PT" | "ZN";
+export type Languages = "DE" | "EN" | "ES" | "JP" | "IT" | "NL" | "NO" | "FR" | "PT";
 
 type Language = {
   id: Languages;
@@ -80,19 +80,14 @@ export const allLanguages: Language[] = [
       allergies: "alergias",
     },
   },
-  {
-    id: "ZN",
-    longName: "中文",
-    icon: "🇨🇳",
-    translations: {
-      allergies: "过敏",
-    },
-  },
 ];
+
+export type Severity = 1 | 2 | 3; // 1: mild, 2: moderate, 3: severe
 
 export type Allergy = {
   shortname: string;
   important?: boolean;
+  severity?: Severity; // New property
   name: {
     [LanguageCode in Languages]: string;
   };
@@ -400,36 +395,6 @@ const allergiesPerLanguage: { [key in Languages]: { [id in Allergies]: string } 
     treeNut: "nozes de árvore",
     wheat: "trigo",
   },
-  ZN: {
-    almond: "杏仁",
-    banana: "香蕉",
-    bean: "豆子",
-    capsicum: "辣椒",
-    celery: "芹菜",
-    crustaceans: "甲壳类",
-    dairy: "乳制品",
-    egg: "鸡蛋",
-    fenugreek: "葫芦巴",
-    fish: "鱼",
-    gluten: "麸质",
-    kiwi: "猕猴桃",
-    legume: "豆类",
-    lupin: "羽扇豆",
-    milk: "牛奶",
-    molluscs: "软体动物",
-    mustard: "芥末",
-    nut: "坚果",
-    onion: "洋葱",
-    peanut: "花生",
-    pea: "豌豆",
-    pepper: "胡椒",
-    sesame: "芝麻",
-    shellfish: "贝类",
-    soy: "大豆",
-    sulfites: "亚硫酸盐",
-    treeNut: "坚果",
-    wheat: "小麦",
-  },
 };
 
 const mapAllergies = (allergyName: Allergies) => {
@@ -442,134 +407,142 @@ const mapAllergies = (allergyName: Allergies) => {
 export const allAllergies: { [id in Allergies]: Allergy } = {
   almond: {
     shortname: "a",
-    important: true,
     name: mapAllergies("almond"),
+    severity: 3,
   },
   banana: {
     shortname: "b",
     name: mapAllergies("banana"),
+    severity: 2,
   },
   bean: {
     shortname: "be",
     name: mapAllergies("bean"),
+    severity: 2,
   },
   capsicum: {
     shortname: "ca",
     name: mapAllergies("capsicum"),
+    severity: 2,
   },
   celery: {
     shortname: "ce",
-    important: true,
     name: mapAllergies("celery"),
+    severity: 3,
   },
   crustaceans: {
     shortname: "cr",
-    important: true,
     name: mapAllergies("crustaceans"),
+    severity: 3,
   },
   dairy: {
     shortname: "d",
-    important: true,
     name: mapAllergies("dairy"),
+    severity: 3,
   },
   egg: {
     shortname: "e",
-    important: true,
     name: mapAllergies("egg"),
+    severity: 3,
   },
   fenugreek: {
     shortname: "fe",
     name: mapAllergies("fenugreek"),
+    severity: 2,
   },
   fish: {
     shortname: "f",
-    important: true,
     name: mapAllergies("fish"),
+    severity: 3,
   },
   gluten: {
     shortname: "g",
-    important: true,
     name: mapAllergies("gluten"),
+    severity: 3,
   },
   kiwi: {
     shortname: "k",
     name: mapAllergies("kiwi"),
+    severity: 2,
   },
   legume: {
     shortname: "le",
-    important: true,
     name: mapAllergies("legume"),
+    severity: 3,
   },
   lupin: {
     shortname: "l",
-    important: true,
     name: mapAllergies("lupin"),
+    severity: 3,
   },
   milk: {
     shortname: "m",
-    important: true,
     name: mapAllergies("milk"),
+    severity: 3,
   },
   molluscs: {
     shortname: "mo",
-    important: true,
     name: mapAllergies("molluscs"),
+    severity: 3,
   },
   mustard: {
     shortname: "mu",
-    important: true,
     name: mapAllergies("mustard"),
+    severity: 3,
   },
   nut: {
     shortname: "n",
-    important: true,
     name: mapAllergies("nut"),
+    severity: 3,
   },
   onion: {
     shortname: "o",
     name: mapAllergies("onion"),
+    severity: 2,
   },
   peanut: {
     shortname: "p",
-    important: true,
     name: mapAllergies("peanut"),
+    severity: 3,
   },
   pea: {
     shortname: "pe",
     name: mapAllergies("pea"),
+    severity: 2,
   },
   sesame: {
     shortname: "se",
-    important: true,
     name: mapAllergies("sesame"),
+    severity: 3,
   },
   shellfish: {
     shortname: "sh",
-    important: true,
     name: mapAllergies("shellfish"),
+    severity: 3,
   },
   soy: {
     shortname: "so",
-    important: true,
     name: mapAllergies("soy"),
+    severity: 3,
   },
   sulfites: {
     shortname: "su",
-    important: true,
     name: mapAllergies("sulfites"),
+    severity: 3,
   },
   pepper: {
     shortname: "pe",
     name: mapAllergies("pepper"),
+    severity: 2,
   },
   treeNut: {
     shortname: "tn",
-    important: true,
     name: mapAllergies("treeNut"),
+    severity: 3,
   },
   wheat: {
     shortname: "w",
-    important: true,
     name: mapAllergies("wheat"),
+    severity: 3,
   },
 };

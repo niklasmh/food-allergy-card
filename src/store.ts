@@ -1,51 +1,67 @@
-import { atom, selector } from "recoil";
-import { Allergies, Languages, allAllergies } from "./allergies";
+import { create } from 'zustand';
+import { Allergies, Languages, allAllergies, Severity } from "./allergies";
 import { parseURLParams } from "./utils/parseURLParams";
 import { getFromPersistentStorage, storeToPersistentStorage } from "./utils/persistentStorage";
 
-export type Color = "red" | "green" | "blue" | "yellow" | "orange" | "purple" | "dark" | "light";
-export type ColorMap = { [key in Color]: string[] };
-export const allColors: { id: Color; colors: string[] }[] = [
-  { id: "dark", colors: ["#151515", "#050505"] },
-  { id: "light", colors: ["#555", "#333"] },
-  { id: "red", colors: ["#ff6a00", "#ee0979"] },
-  { id: "orange", colors: ["#f5af19", "#f12711"] },
-  { id: "yellow", colors: ["#dda200", "#aa661E"] },
-  { id: "green", colors: ["#88c063", "#46ab2f"] },
-  { id: "blue", colors: ["#0575E6", "#021B79"] },
-  { id: "purple", colors: ["#8E2DE2", "#4A00E0"] },
-];
-export const colorMap: { [id in Color]: string[] } = allColors.reduce((acc, c) => ({ ...acc, [c.id]: c.colors }), {
-  red: [],
-  green: [],
-  blue: [],
-  yellow: [],
-  orange: [],
-  purple: [],
-  dark: [],
-  light: [],
-});
+export const colorMap: { [id: string]: string[] } = {
+  dark: ["#151515", "#050505"],
+  light: ["#555", "#333"],
+  red: ["#ff6a00", "#ee0979"],
+  orange: ["#f5af19", "#f12711"],
+  yellow: ["#dda200", "#aa661E"],
+  green: ["#88c063", "#46ab2f"],
+  blue: ["#0575E6", "#021B79"],
+  purple: ["#8E2DE2", "#4A00E0"],
+};
+
+export type AllergyWithSeverity = {
+  id: Allergies;
+  severity: Severity;
+};
 
 export type Card = {
   name: string;
   id: string;
-  color: Color;
+  color: string;
   isFromLink: boolean;
   saved: boolean;
   languages: Languages[];
-  allergies: Allergies[];
+  allergies: AllergyWithSeverity[];
 };
 
-function createCard(allergies: Allergies[], languages: Languages[], fromLink: boolean, saved: boolean): Card {
+type Store = {
+  currentCard: Card;
+  cards: Card[];
+  editMode: boolean;
+  editAllergiesMode: boolean;
+  editLanguagesMode: boolean;
+  allergiesShortNames: () => string[];
+  setCard: (card: Card) => void;
+  setCards: (cards: Card[]) => void;
+  setAllergies: (allergies: AllergyWithSeverity[]) => void;
+  setAllergySeverity: (id: Allergies, severity: Severity) => void;
+  setEditMode: (mode: boolean) => void;
+  setEditAllergiesMode: (mode: boolean) => void;
+  setEditLanguagesMode: (mode: boolean) => void;
+};
+
+const createCard = (allergies: Allergies[], languages: Languages[], fromLink: boolean, saved: boolean): Card => {
+  const allergiesWithSeverity: AllergyWithSeverity[] = allergies
+    .filter((id) => id in allAllergies)
+    .map((id) => ({
+      id,
+      severity: allAllergies[id].severity || 1,
+    }));
+
   if (!fromLink && !saved) {
     const card = {
       name: "",
       id: Math.random().toString(16).slice(2),
-      color: "dark" as Color,
+      color: colorMap['dark'][0],
       isFromLink: fromLink,
       saved: true,
       languages,
-      allergies,
+      allergies: allergiesWithSeverity,
     };
     storeToPersistentStorage<Card>("currentCard", card);
     const cards = getFromPersistentStorage<Card[]>("cards", []);
@@ -55,71 +71,78 @@ function createCard(allergies: Allergies[], languages: Languages[], fromLink: bo
   return {
     name: "",
     id: saved ? Math.random().toString(16).slice(2) : "",
-    color: "dark" as Color,
+    color: colorMap['dark'][0],
     isFromLink: fromLink,
     saved,
     languages,
-    allergies,
+    allergies: allergiesWithSeverity,
   };
 }
 
 const { allergies, languages, hasParams } = parseURLParams();
+const initialCurrentCardFromStorage = getFromPersistentStorage<Card>("currentCard", () => createCard([], [], false, false));
+if (initialCurrentCardFromStorage.allergies && initialCurrentCardFromStorage.allergies.length > 0 && typeof initialCurrentCardFromStorage.allergies[0] === 'string') {
+  initialCurrentCardFromStorage.allergies = (initialCurrentCardFromStorage.allergies as unknown as Allergies[]).map((id) => ({
+    id,
+    severity: allAllergies[id]?.severity || 1,
+  }));
+}
 
-let card: Card = hasParams
+const initialCurrentCard = hasParams
   ? createCard(allergies, languages, true, false)
-  : getFromPersistentStorage<Card>("currentCard", () => createCard([], [], false, false));
+  : initialCurrentCardFromStorage;
 
-export const currentCardState = atom<Card>({
-  key: "currentCard",
-  default: card,
-  effects: [
-    ({ onSet, setSelf }) => {
-      onSet((card) => {
-        if (!card.isFromLink) {
-          const savedCard = { ...card, saved: true };
-          storeToPersistentStorage<Card>("currentCard", savedCard);
-          setSelf(savedCard);
-        }
-      });
-    },
-  ],
+const initialCardsFromStorage = getFromPersistentStorage<Card[]>("cards", []);
+initialCardsFromStorage.forEach(card => {
+  if (card.allergies && card.allergies.length > 0 && typeof card.allergies[0] === 'string') {
+    card.allergies = (card.allergies as unknown as Allergies[]).map((id) => ({
+      id,
+      severity: allAllergies[id]?.severity || 1,
+    }));
+  }
 });
+const initialCards = initialCardsFromStorage;
 
-const cards = getFromPersistentStorage<Card[]>("cards", []);
+export const useAllergy = (id: Allergies) => {
+  return useStore((state) => state.currentCard.allergies.find((a) => a.id === id));
+}
 
-export const cardsState = atom<Card[]>({
-  key: "cards",
-  default: cards?.length ? cards : [card],
-  effects: [
-    ({ onSet, setSelf }) => {
-      onSet((cards) => {
-        const savedCards = cards.map((c) => ({ ...c, saved: true, isFromLink: false }));
-        storeToPersistentStorage<Card[]>("cards", savedCards);
-        setSelf(savedCards);
-      });
-    },
-  ],
-});
-
-export const allergiesShortNamesState = selector({
-  key: "allergiesShortNames",
-  get: ({ get }) => {
-    const card = get(currentCardState);
-    return card.allergies.map((a: Allergies) => (a in allAllergies ? allAllergies[a].shortname : a));
+export const useStore = create<Store>((set, get) => ({
+  currentCard: initialCurrentCard,
+  cards: initialCards,
+  editMode: initialCurrentCard.allergies.length === 0,
+  editAllergiesMode: initialCurrentCard.allergies.length === 0,
+  editLanguagesMode: initialCurrentCard.allergies.length === 0,
+  allergiesShortNames: () => {
+    const card = get().currentCard;
+    return card.allergies.map((a) => (a.id in allAllergies ? allAllergies[a.id].shortname : a.id));
   },
-});
-
-export const editState = atom<boolean>({
-  key: "edit",
-  default: card.allergies.length === 0,
-});
-
-export const editAllergiesState = atom<boolean>({
-  key: "editAllergies",
-  default: card.allergies.length === 0,
-});
-
-export const editLanguagesState = atom<boolean>({
-  key: "editLanguages",
-  default: card.allergies.length === 0,
-});
+  setAllergies: (allergies) => {
+    const card = get().currentCard;
+    const updatedCard = { ...card, allergies };
+    get().setCard(updatedCard);
+  },
+  setAllergySeverity: (id: Allergies, severity: Severity) => {
+    const card = get().currentCard;
+    const updatedAllergies = card.allergies.map((a) => (a.id === id ? { ...a, severity } : a));
+    const updatedCard = { ...card, allergies: updatedAllergies };
+    get().setCard(updatedCard);
+  },
+  setCard: (card) => {
+    if (!card.isFromLink) {
+      const savedCard = { ...card, saved: true };
+      storeToPersistentStorage<Card>("currentCard", savedCard);
+      set({ currentCard: savedCard });
+    } else {
+      set({ currentCard: card });
+    }
+  },
+  setCards: (cards) => {
+    const savedCards = cards.map((c) => ({ ...c, saved: true, isFromLink: false }));
+    storeToPersistentStorage<Card[]>("cards", savedCards);
+    set({ cards: savedCards });
+  },
+  setEditMode: (mode) => set({ editMode: mode }),
+  setEditAllergiesMode: (mode) => set({ editAllergiesMode: mode }),
+  setEditLanguagesMode: (mode) => set({ editLanguagesMode: mode }),
+}));

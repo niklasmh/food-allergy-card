@@ -1,22 +1,24 @@
 import QRCode from "react-qr-code";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { allergiesShortNamesState, currentCardState } from "../store";
-
-let prevUrlData = "";
+import { useStore } from "../store";
+import { useMemo, useEffect } from "react";
 
 export function Share() {
-  const [card] = useRecoilState(currentCardState);
-  const allergiesShortNames = useRecoilValue(allergiesShortNamesState);
+  const card = useStore((state) => state.currentCard);
+  const allergiesShortNames = useStore((state) => state.allergiesShortNames);
 
-  const allergiesParam = allergiesShortNames.join(",");
-  const languagesParam = card.languages.join(",").toLowerCase();
-  const urlData = "?a=" + allergiesParam + "&l=" + languagesParam;
-  const url = location.origin + urlData;
+  const url = useMemo(() => {
+    const allergiesParam = allergiesShortNames().join(",");
+    const languagesParam = card.languages.join(",").toLowerCase();
+    const urlData = "?a=" + allergiesParam + "&l=" + languagesParam;
+    return location.origin + urlData;
+  }, [allergiesShortNames, card.languages]);
 
-  if (!card.saved && !card.isFromLink && url !== prevUrlData) {
-    prevUrlData = url;
-    history.replaceState({ a: allergiesParam, l: languagesParam }, "Food Allergy Card | " + allergiesParam, urlData);
-  }
+  useEffect(() => {
+    const urlData = url.replace(location.origin, "");
+    if (!card.saved && !card.isFromLink) {
+      history.replaceState({ a: urlData }, "Food Allergy Card | " + urlData, urlData);
+    }
+  }, [url, card.saved, card.isFromLink]);
 
   return (
     <div className="mb-16">

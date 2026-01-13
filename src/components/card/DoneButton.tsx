@@ -1,10 +1,7 @@
-import { useRecoilState } from "recoil";
-import { editAllergiesState, editLanguagesState, editState } from "../../store";
+import { useStore } from "../../store";
 
 export function DoneButton() {
-  const [, setEdit] = useRecoilState(editState);
-  const [, setEditAllergy] = useRecoilState(editAllergiesState);
-  const [, setEditLanguage] = useRecoilState(editLanguagesState);
+  const { setEditMode: setEdit, setEditAllergiesMode: setEditAllergy, setEditLanguagesMode: setEditLanguage } = useStore();
 
   return (
     <button

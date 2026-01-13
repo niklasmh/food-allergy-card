@@ -1,10 +1,8 @@
-import { useRecoilState } from "recoil";
 import { allLanguages, type Languages as LanguagesType } from "../allergies";
-import { cardsState, currentCardState } from "../store";
+import { useStore } from "../store";
 
 export function Languages() {
-  const [card, setCard] = useRecoilState(currentCardState);
-  const [cards, setCards] = useRecoilState(cardsState);
+  const { currentCard: card, setCard, cards, setCards } = useStore();
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.target.checked;
@@ -21,7 +19,7 @@ export function Languages() {
     }
     const updatedCard = { ...card, languages };
     setCard(updatedCard);
-    setCards((cards) => cards.map((c) => (c.id === card.id ? updatedCard : c)));
+    setCards(cards.map((c) => (c.id === card.id ? updatedCard : c)));
   };
 
   const labelStyle = "language-choice flex flex-row w-40 px-3 py-1 gap-2 cursor-pointer";

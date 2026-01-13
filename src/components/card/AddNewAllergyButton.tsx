@@ -1,8 +1,7 @@
-import { useRecoilState } from "recoil";
-import { editAllergiesState } from "../../store";
+import { useStore } from "../../store";
 
 export function AddNewAllergyButton() {
-  const [edit, setEdit] = useRecoilState(editAllergiesState);
+  const { editAllergiesMode: edit, setEditAllergiesMode: setEdit } = useStore();
 
   if (edit) {
     return (

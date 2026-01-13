@@ -12,7 +12,7 @@ import { Share } from "./components/Share";
 
 function App() {
   return (
-    <div className="App flex flex-col gap-16">
+    <div className="App">
       <Card />
       <Share />
       <Disclaimer />

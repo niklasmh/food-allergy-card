@@ -1,9 +1,7 @@
-import { useRecoilState } from "recoil";
-import { currentCardState, cardsState } from "../../store";
+import { useStore } from "../../store";
 
 export function SaveToCards() {
-  const [card, setCard] = useRecoilState(currentCardState);
-  const [, setCards] = useRecoilState(cardsState);
+  const { currentCard: card, setCard, cards, setCards } = useStore();
 
   return (
     <div className="flex flex-col gap-4">
@@ -13,7 +11,7 @@ export function SaveToCards() {
           const modifiedCard = { ...card, isFromLink: false, saved: true, id: Math.random().toString(16).slice(2) };
           history.replaceState({}, "Food Allergy Card", "/");
           setCard(modifiedCard);
-          setCards((cards) => [modifiedCard, ...cards]);
+          setCards([modifiedCard, ...cards]);
         }}
       >
         + Add to your cards

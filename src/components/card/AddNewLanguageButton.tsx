@@ -1,8 +1,7 @@
-import { useRecoilState } from "recoil";
-import { editLanguagesState } from "../../store";
+import { useStore } from "../../store";
 
 export function AddNewLanguageButton() {
-  const [edit, setEdit] = useRecoilState(editLanguagesState);
+  const { editLanguagesMode: edit, setEditLanguagesMode: setEdit } = useStore();
 
   if (edit) {
     return (

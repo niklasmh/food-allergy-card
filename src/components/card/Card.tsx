@@ -1,5 +1,4 @@
 import { CSSProperties, Fragment, ReactNode, useState } from "react";
-import { useRecoilState } from "recoil";
 import {
   DndContext,
   closestCenter,
@@ -12,8 +11,9 @@ import {
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStrategy } from "@dnd-kit/sortable";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { darkenHexColor } from "../../utils/colors";
 import { allLanguages } from "../../allergies";
-import { cardsState, colorMap, currentCardState, editAllergiesState, editLanguagesState, editState } from "../../store";
+import { useStore } from "../../store";
 import { Cards } from "./Cards";
 import { ColorPicker } from "./ColorPicker";
 import { EditCardButton } from "./EditCardButton";
@@ -28,11 +28,18 @@ import { DoneButton } from "./DoneButton";
 import { PrintCardButton } from "./PrintCardButton";
 
 export function Card() {
-  const [card, setCard] = useRecoilState(currentCardState);
-  const [, setCards] = useRecoilState(cardsState);
-  const [editMode, setEditMode] = useRecoilState(editState);
-  const [editAllergyMode, setEditAllergyMode] = useRecoilState(editAllergiesState);
-  const [editLanguages, setEditLanguages] = useRecoilState(editLanguagesState);
+  const {
+    currentCard: card,
+    setCard,
+    cards,
+    setCards,
+    editMode,
+    setEditMode,
+    editAllergiesMode,
+    setEditAllergiesMode,
+    editLanguagesMode: editLanguages,
+    setEditLanguagesMode: setEditLanguages
+  } = useStore();
   const [printMode, setPrintMode] = useState<boolean>(false);
 
   const beautifyPrintGridCols = (elementCount: number): number => {
@@ -71,34 +78,33 @@ export function Card() {
     const { active, over } = event;
 
     if (active.id !== over.id) {
-      const oldIndex = card.allergies.indexOf(active.id);
-      const newIndex = card.allergies.indexOf(over.id);
+      const oldIndex = card.allergies.findIndex((a) => a.id === active.id);
+      const newIndex = card.allergies.findIndex((a) => a.id === over.id);
       const updatedCard = { ...card, allergies: arrayMove(card.allergies, oldIndex, newIndex) };
       setCard(updatedCard);
-      setCards((cards) => cards.map((c) => (c.id === card.id ? updatedCard : c)));
+      setCards(cards.map((c) => (c.id === card.id ? updatedCard : c)));
     }
   }
 
   const cardElement = (
     <div
-      className={"card relative" + (editMode ? " !pb-20 gap-4" : "")}
-      style={{ backgroundImage: `linear-gradient(120deg, ${(colorMap[card.color || "dark"] || []).join(",")})` }}
-    >
-      <h1 className="title capitalize mb-8">
-        {(card.name || allLanguages.find((l) => l.id === card.languages[0])?.translations["allergies"]) ?? "Allergies"}
+      className={"card relative overflow-visible" + (editMode ? " !pb-20 gap-4" : "")}
+      style={{ backgroundImage: `linear-gradient(120deg, ${card.color}, ${darkenHexColor(card.color, 50)})` }}
+    >      <h1 className="title capitalize mb-8">
+        {(card.name || (card.languages.length > 0 && allLanguages.find((l) => l.id === card.languages[0])?.translations["allergies"])) ?? "Allergies"}
       </h1>
-      {!editAllergyMode && !editLanguages && (
+      {!editAllergiesMode && !editLanguages && (
         <div
           className={"items gap-3 w-full grid" + beautifyGrid(card.allergies.length)}
           style={{ "--print-cols": beautifyPrintGridCols(card.allergies.length) } as CSSProperties}
         >
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-            <SortableContext disabled={!editMode} items={card.allergies} strategy={rectSortingStrategy}>
+            <SortableContext disabled={!editMode} items={card.allergies.map(a => a.id)} strategy={rectSortingStrategy}>
               {card.allergies
-                .filter((id) => !!id)
-                .map((id) => (
-                  <SortableItem key={id} id={id} disabled={!editMode}>
-                    <AllergyItem key={id} id={id} languages={card.languages} />
+                .filter((a) => !!a.id)
+                .map((allergy) => (
+                  <SortableItem key={allergy.id} id={allergy.id} disabled={!editMode}>
+                    <AllergyItem key={allergy.id} id={allergy.id} languages={card.languages} />
                   </SortableItem>
                 ))}
             </SortableContext>
@@ -106,7 +112,7 @@ export function Card() {
           {card.allergies.length === 0 && `(Click on "🖊️ Edit card" to add allergies)`}
         </div>
       )}
-      {editAllergyMode && (
+      {editAllergiesMode && (
         <div className="h-full w-full flex flex-col justify-center">
           <AllergyList />
         </div>
@@ -120,11 +126,10 @@ export function Card() {
       {editMode && (
         <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-4">
           {!editLanguages && <AddNewAllergyButton />}
-          {!editAllergyMode && <AddNewLanguageButton />}
-          {editAllergyMode && editLanguages && <DoneButton />}
+          {!editAllergiesMode && <AddNewLanguageButton />}
+          {editAllergiesMode && editLanguages && <DoneButton />}
         </div>
       )}
-      {editMode && <ColorPicker />}
     </div>
   );
 
@@ -143,12 +148,13 @@ export function Card() {
   return (
     <div className={"flex flex-col justify-center items-center mb-8 gap-16 min-h-screen" + (editMode ? " edit" : "")}>
       {cardElement}
+      {editMode && <ColorPicker />}
       <div className="flex flex-row w-full items-start justify-between flex-wrap gap-4">
         <EditCardButton />
         <PrintCardButton
           onClick={() => {
             setEditMode(false);
-            setEditAllergyMode(false);
+            setEditAllergiesMode(false);
             setEditLanguages(false);
             setPrintMode(true);
             setTimeout(() => {
@@ -172,11 +178,12 @@ type SortableItemProps = {
 };
 
 export function SortableItem(props: SortableItemProps) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: props.id });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: props.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    opacity: isDragging ? 0.5 : 1,
   };
 
   return (

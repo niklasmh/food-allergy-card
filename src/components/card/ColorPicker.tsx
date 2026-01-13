@@ -1,12 +1,11 @@
-import { useRecoilState } from "recoil";
-import { currentCardState, cardsState, allColors } from "../../store";
+import { useStore, colorMap } from "../../store";
 
 export function ColorPicker() {
-  const [card, setCard] = useRecoilState(currentCardState);
-  const [, setCards] = useRecoilState(cardsState);
+  const { currentCard: card, setCard, cards, setCards } = useStore();
+  const allColors = Object.entries(colorMap).map(([id, colors]) => ({ id, colors }));
 
   return (
-    <div className="w-full flex flex-row justify-center gap-2 absolute left-0" style={{ bottom: -32 }}>
+    <div className="w-full flex flex-row justify-center gap-2">
       <div className="flex flex-row gap-2">
         {allColors.map(({ id, colors }) => (
           <div
@@ -19,7 +18,7 @@ export function ColorPicker() {
             onClick={() => {
               const modifiedCard = { ...card, color: id };
               setCard(modifiedCard);
-              setCards((cards) => cards.map((c) => (c.id === card.id ? modifiedCard : c)));
+              setCards(cards.map((c) => (c.id === card.id ? modifiedCard : c)));
             }}
           />
         ))}

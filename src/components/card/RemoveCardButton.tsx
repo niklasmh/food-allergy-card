@@ -1,9 +1,7 @@
-import { useRecoilState } from "recoil";
-import { currentCardState, cardsState } from "../../store";
+import { useStore } from "../../store";
 
 export function RemoveCardButton() {
-  const [card, setCard] = useRecoilState(currentCardState);
-  const [cards, setCards] = useRecoilState(cardsState);
+  const { currentCard: card, setCard, cards, setCards } = useStore();
 
   return (
     <button
